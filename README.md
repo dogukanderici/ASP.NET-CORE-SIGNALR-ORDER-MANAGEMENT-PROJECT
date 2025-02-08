@@ -39,20 +39,20 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 
 **Videolar**
 
-- 🎥 Genel Tanıtım, Sipariş ve Sepet İşlemleri
-[![Main Page Video](https://drive.google.com/file/d/1AgUnYt6dNhfMWfq1OiLdy5XJlqF7wN1M/view?usp=sharing)]
+- Genel Tanıtım, Sipariş ve Sepet İşlemleri
+[📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1AgUnYt6dNhfMWfq1OiLdy5XJlqF7wN1M/view?usp=sharing)
 
-- 🎥 Yeni Kullanıcı Kayıt İşlemi ve Şifre Değişikliği
-[![Register Video](https://drive.google.com/file/d/1J0Q6KNK329dvdRTRAzORIcUIr1ODqf4Q/view?usp=sharing)]
+- Yeni Kullanıcı Kayıt İşlemi ve Şifre Değişikliği
+[📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1J0Q6KNK329dvdRTRAzORIcUIr1ODqf4Q/view?usp=sharing)
 
-- 🎥 Rezervasyon İşlemleri
-[![Booking Video](https://drive.google.com/file/d/1FgNCwyAGrY9KBozFw3LUkzDIwBo3iwQJ/view?usp=sharing)]
+- Rezervasyon İşlemleri
+[📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1FgNCwyAGrY9KBozFw3LUkzDIwBo3iwQJ/view?usp=sharing)
 
-- 🎥 Sistem Rolleri ve Kullanıcı Rol Tanımlamaları
-[![Administration Processes Video](https://drive.google.com/file/d/19w6Y77V_9H6LEL5sMa_cNwHDj_oXH2Xl/view?usp=sharing)]
+- Sistem Rolleri ve Kullanıcı Rol Tanımlamaları
+[📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/19w6Y77V_9H6LEL5sMa_cNwHDj_oXH2Xl/view?usp=sharing)
 
-- 🎥 Kullanıcı Mesajları
-[![Admin Panel](https://drive.google.com/file/d/1EHcHX7v6OyFi7utZSIiI5zJQ2hwMl5jO/view?usp=sharing)]
+- Kullanıcı Mesajları
+[📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1EHcHX7v6OyFi7utZSIiI5zJQ2hwMl5jO/view?usp=sharing)
 
 **Ekran Görüntüleri**
 
