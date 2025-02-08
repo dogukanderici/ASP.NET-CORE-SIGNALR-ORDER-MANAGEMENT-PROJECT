@@ -35,8 +35,8 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 - Mimekit
 
 **NOT**
-- Veri tabanında Orders ve OrderDetails tablolarında trigger kullanılmıştır. SumMoneyCase ile MoneyCase tablosu için, DecreaseOrderPrice ile Orders tablosu için ve UpdateOrderDetailStatus ile OrderDetails tablosundaki OrderStatus sütunu güncellenmiştir.
-- Requirements klasçrü içindeki Database_Triggers isimli dosyadan trigger kodlarını görüntüleyebilirsiniz.
+- Veri tabanında Orders ve OrderDetails tablolarında trigger kullanılmıştır. SumMoneyCase ile MoneyCases tablosu için, DecreaseOrderPrice ile Orders tablosu için ve UpdateOrderDetailStatus ile OrderDetails tablosundaki OrderStatus sütunu güncellenmiştir.
+- Requirements klasörü içindeki Database_Triggers isimli dosyadan trigger kodlarını görüntüleyebilirsiniz.
 
 **Projeye Ait Ekran Görüntüleri**
 - Daha fazlası için **SignalRWebUI -> wwwroot -> asset -> screenshots** klasörü altından ulaşabilirsiniz.
