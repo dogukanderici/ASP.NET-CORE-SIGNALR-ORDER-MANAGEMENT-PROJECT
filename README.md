@@ -4,14 +4,14 @@
 
 * Bu proje N-Tier mimarisiyle oluşturulmuş, veriler Docker üzerinde Portainer ile ayağa kaldırılmış MSSQL kullanılarak depolanmış,
 Duendde IdentityServer ile JWT token'lar oluşturularak güvenliği sağlanmış,
-anlık veirlerin Ajax ve SignalR ile alındığı bir sipariş yönetim projesidir.
+anlık verilerin Ajax ve SignalR ile alındığı bir sipariş yönetim projesidir.
 
 * Ana sayfada menüleri görüntüleyebilir, rezervasyon yapabilir, Help Desk üzerinden mesajlarınızı Admin kullanıcılarına iletebilir, kullanıcı kaydı oluşturup kullanıcınızla yorum yapabilirsiniz.
 
-* Menüde yer alan ürünleri kategorilerine göre filtreyebilir ve sepetinize ekleyebilirsiniz. Sepet sayfasında ana sayfada yer alan indiirmler bölümündeki indiirm kodunu uygulayarak anlık indirimlerden yararlanabilirsiniz.
+* Menüde yer alan ürünleri kategorilerine göre filtreyebilir ve sepetinize ekleyebilirsiniz. Sepet sayfasında ana sayfada yer alan indirimler bölümündeki indirim kodunu uygulayarak anlık indirimlerden yararlanabilirsiniz.
 
 * Admin ve kullanıcı panelleri bulunmaktadır. Admin panelinden ürün, kategori, indirim, masa ekleme, düzenleme ve silme işlemlerini, 
-sisteme kayıt olmuş kullanıcılara AspNetRoles ve AspNetUserRoles tablolarını kullanarak yeni rol tanımı ve kullanıcıya rol atama işlemlerini,
+sisteme kayıt olmuş kullanıcılara AspNetRoles ve AspNetUserRoles tabloları aracılığıyla yeni rol tanımı ve kullanıcıya rol atama işlemlerini,
 Dashboard üzerinden ürünlere ve finansal verilerin istatistiklerini görüntüleme,
 Masa durumlarını anlık olarak takip edebilir dolu masalara ait sipariş özetini görüntüleme ve ödeme işlemlerini,
 Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işlemlerini yapabilirsiniz. Rezervasyona ait herhangi bir değişlik yapıldığında veya yeni bir rezervasyon oluşturulduğunda mail adresine rezervasyon bilglerini mail olarak iletilmektedir.
@@ -28,8 +28,8 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 - Duende IdentityServer
 - Entity Framework
 - Ajax
-- N-Tier Architecture
-- Dependency Injection Design Pattern
+- Katmanlı Mimari (N-Tier Architecture)
+- Dependency Injection Design Pattern (DI)
 - AutoMapper
 - FluentValidation
 - Mimekit
@@ -39,19 +39,24 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 
 **Videolar**
 
-- Genel Tanıtım, Sipariş ve Sepet İşlemleri
+**Genel Tanıtım, Sipariş ve Sepet İşlemleri**
+- Uygulamanın genel tanıtımı, menüden ürün seçimi, sepete ekleme ve sipariş tamamlama süreçleri bu videoda gösterilmektedir.
 [📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1AgUnYt6dNhfMWfq1OiLdy5XJlqF7wN1M/view?usp=sharing)
 
-- Yeni Kullanıcı Kayıt İşlemi ve Şifre Değişikliği
+**Yeni Kullanıcı Kaydı ve Şifre Değiştirme**
+- Kullanıcı kayıt süreci, giriş yapma ve şifre değiştirme işlemleri anlatılmaktadır.
 [📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1J0Q6KNK329dvdRTRAzORIcUIr1ODqf4Q/view?usp=sharing)
 
-- Rezervasyon İşlemleri
+**Rezervasyon İşlemleri**
+- Kullanıcıların restoran için rezervasyon oluşturma, güncelleme ve iptal etme işlemleri bu videoda anlatılmaktadır.
 [📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1FgNCwyAGrY9KBozFw3LUkzDIwBo3iwQJ/view?usp=sharing)
 
-- Sistem Rolleri ve Kullanıcı Rol Tanımlamaları
+**Sistem Rolleri ve Kullanıcı Rol Tanımlamaları**
+- Admin panelinde kullanıcı rollerinin nasıl tanımlandığı ve yetkilendirme işlemlerinin nasıl yapıldığı gösterilmektedir.
 [📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/19w6Y77V_9H6LEL5sMa_cNwHDj_oXH2Xl/view?usp=sharing)
 
-- Kullanıcı Mesajları
+**Kullanıcı Mesajları**
+- Kullanıcıların Help Desk üzerinden mesaj göndermesi ve admin tarafından bu mesajların yönetilmesi anlatılmaktadır.
 [📹 Videoyu Buradan İzleyin](https://drive.google.com/file/d/1EHcHX7v6OyFi7utZSIiI5zJQ2hwMl5jO/view?usp=sharing)
 
 **Ekran Görüntüleri**
@@ -63,7 +68,7 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 ![Screenshot_5](SignalRWebUI/wwwroot/asset/screenshots/register.jpg)
 ![Screenshot_6](SignalRWebUI/wwwroot/asset/screenshots/docker.jpg)
 ![Screenshot_7](SignalRWebUI/wwwroot/asset/screenshots/portainer.jpg)
-**QR Kod okunması sırasında bir sorun oluşup masa seçimi yapılamazsa manuel olarak masa seçimi yapılır.**
+**QR Kod taranamazsa manuel olarak masa seçimi yapılır.**
 ![Screenshot_8](SignalRWebUI/wwwroot/asset/screenshots/default_restaurant_tables.jpg)
 ![Screenshot_9](SignalRWebUI/wwwroot/asset/screenshots/admin_dashboard_.jpg)
 ![Screenshot_10](SignalRWebUI/wwwroot/asset/screenshots/money_case_.jpg)
