@@ -41,3 +41,4 @@ temp/
 *.tmp
 
 SignalRWebUI/wwwroot/asset/screenshots/*.mp4
+SignalRWebUI/wwwroot/asset/screenshots/*.png
