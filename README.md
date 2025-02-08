@@ -1,24 +1,24 @@
-# Asp.Net Core Api SignalR ile QR Kodlu Sipariþ Yönetimi
+ï»¿# Asp.Net Core Api SignalR ile QR Kodlu SipariÅŸ YÃ¶netimi
 
-**Proje Hakkýnda**
+**Proje HakkÄ±nda**
 
-* Bu proje N-Tier mimarisiyle oluþturulmuþ, veriler Docker üzerinde Portainer ile ayaða kaldýrýlmýþ MSSQL kullanýlarak depolanmýþ,
-Duendde IdentityServer ile JWT token'lar oluþturularak güvenliði saðlanmýþ,
-anlýk veirlerin Ajax ve SignalR ile alýndýðý bir sipariþ yönetim projesidir.
+* Bu proje N-Tier mimarisiyle oluÅŸturulmuÅŸ, veriler Docker Ã¼zerinde Portainer ile ayaÄŸa kaldÄ±rÄ±lmÄ±ÅŸ MSSQL kullanÄ±larak depolanmÄ±ÅŸ,
+Duendde IdentityServer ile JWT token'lar oluÅŸturularak gÃ¼venliÄŸi saÄŸlanmÄ±ÅŸ,
+anlÄ±k veirlerin Ajax ve SignalR ile alÄ±ndÄ±ÄŸÄ± bir sipariÅŸ yÃ¶netim projesidir.
 
-* Ana sayfada menüleri görüntüleyebilir, rezervasyon yapabilir, Help Desk üzerinden mesajlarýnýzý Admin kullanýcýlarýna iletebilir, kullanýcý kaydý oluþturup kullanýcýnýzla yorum yapabilirsiniz.
+* Ana sayfada menÃ¼leri gÃ¶rÃ¼ntÃ¼leyebilir, rezervasyon yapabilir, Help Desk Ã¼zerinden mesajlarÄ±nÄ±zÄ± Admin kullanÄ±cÄ±larÄ±na iletebilir, kullanÄ±cÄ± kaydÄ± oluÅŸturup kullanÄ±cÄ±nÄ±zla yorum yapabilirsiniz.
 
-* Menüde yer alan ürünleri kategorilerine göre filtreyebilir ve sepetinize ekleyebilirsiniz. Sepet sayfasýnda ana sayfada yer alan indiirmler bölümündeki indiirm kodunu uygulayarak anlýk indirimlerden yararlanabilirsiniz.
+* MenÃ¼de yer alan Ã¼rÃ¼nleri kategorilerine gÃ¶re filtreyebilir ve sepetinize ekleyebilirsiniz. Sepet sayfasÄ±nda ana sayfada yer alan indiirmler bÃ¶lÃ¼mÃ¼ndeki indiirm kodunu uygulayarak anlÄ±k indirimlerden yararlanabilirsiniz.
 
-* Admin ve kullanýcý panelleri bulunmaktadýr. Admin panelinden ürün, kategori, indirim, masa ekleme, düzenleme ve silme iþlemlerini, 
-sisteme kayýt olmuþ kullanýcýlara AspNetRoles ve AspNetUserRoles tablolarýný kullanarak yeni rol tanýmý ve kullanýcýya rol atama iþlemlerini,
-Dashboard üzerinden ürünlere ve finansal verilerin istatistiklerini görüntüleme,
-Masa durumlarýný anlýk olarak takip edebilir dolu masalara ait sipariþ özetini görüntüleme ve ödeme iþlemlerini,
-Rezervasyonlarý görüntüleme, düzenleme ve yeni rezervasyon oluþturma iþlemlerini yapabilirsiniz. Rezervasyona ait herhangi bir deðiþlik yapýldýðýnda veya yeni bir rezervasyon oluþturulduðunda mail adresine rezervasyon bilglerini mail olarak iletilmektedir.
+* Admin ve kullanÄ±cÄ± panelleri bulunmaktadÄ±r. Admin panelinden Ã¼rÃ¼n, kategori, indirim, masa ekleme, dÃ¼zenleme ve silme iÅŸlemlerini, 
+sisteme kayÄ±t olmuÅŸ kullanÄ±cÄ±lara AspNetRoles ve AspNetUserRoles tablolarÄ±nÄ± kullanarak yeni rol tanÄ±mÄ± ve kullanÄ±cÄ±ya rol atama iÅŸlemlerini,
+Dashboard Ã¼zerinden Ã¼rÃ¼nlere ve finansal verilerin istatistiklerini gÃ¶rÃ¼ntÃ¼leme,
+Masa durumlarÄ±nÄ± anlÄ±k olarak takip edebilir dolu masalara ait sipariÅŸ Ã¶zetini gÃ¶rÃ¼ntÃ¼leme ve Ã¶deme iÅŸlemlerini,
+RezervasyonlarÄ± gÃ¶rÃ¼ntÃ¼leme, dÃ¼zenleme ve yeni rezervasyon oluÅŸturma iÅŸlemlerini yapabilirsiniz. Rezervasyona ait herhangi bir deÄŸiÅŸlik yapÄ±ldÄ±ÄŸÄ±nda veya yeni bir rezervasyon oluÅŸturulduÄŸunda mail adresine rezervasyon bilglerini mail olarak iletilmektedir.
 
-* Kullanýcý panelinden rezervasyon oluþturabilir, rezervasyonlarýnýzý görüntüleyebilir, yorum ve help desk mesajlarýný listeleyebilir, yeni mesaj gönderebilirsiniz. Kullanýcý bilgilerinizi veya þifre deðiþikliði yapabilirsiniz.
+* KullanÄ±cÄ± panelinden rezervasyon oluÅŸturabilir, rezervasyonlarÄ±nÄ±zÄ± gÃ¶rÃ¼ntÃ¼leyebilir, yorum ve help desk mesajlarÄ±nÄ± listeleyebilir, yeni mesaj gÃ¶nderebilirsiniz. KullanÄ±cÄ± bilgilerinizi veya ÅŸifre deÄŸiÅŸikliÄŸi yapabilirsiniz.
 
-**Kullanýlan Teknolojiler**
+**KullanÄ±lan Teknolojiler**
 
 - .Net 8
 - SignalR
@@ -34,27 +34,27 @@ Rezervasyonlarý görüntüleme, düzenleme ve yeni rezervasyon oluþturma iþlemlerini
 - FluentValidation
 - Mimekit
 
-**Projeye Ait Ekran Görüntüleri**
-- Daha fazlasý için **SignalRWebUI -> wwwroot -> asset -> screenshots** klasörü altýndan ulaþabilirsiniz.
+**Projeye Ait Ekran GÃ¶rÃ¼ntÃ¼leri**
+- Daha fazlasÄ± iÃ§in **SignalRWebUI -> wwwroot -> asset -> screenshots** klasÃ¶rÃ¼ altÄ±ndan ulaÅŸabilirsiniz.
 
 **Videolar**
 
-- Genel Tanýtým, Sipariþ ve Sepet Ýþlemleri
-![Main Page Video](SignalRWebUI/wwwroot/asset/screenshots/genel_tanitim_siparis_sepet.mp4)
+- ðŸŽ¥ Genel TanÄ±tÄ±m, SipariÅŸ ve Sepet Ä°ÅŸlemleri
+![Main Page Video](https://drive.google.com/file/d/1AgUnYt6dNhfMWfq1OiLdy5XJlqF7wN1M/view?usp=sharing)
 
-- Yeni Kullanýcý Kayýt Ýþlemi ve Þifre Deðiþikliði
-![Register Video](SignalRWebUI/wwwroot/asset/screenshots/kullanici_kaydi_sifre_degisikligi.mp4)
+- ðŸŽ¥ Yeni KullanÄ±cÄ± KayÄ±t Ä°ÅŸlemi ve Åžifre DeÄŸiÅŸikliÄŸi
+![Register Video](https://drive.google.com/file/d/1J0Q6KNK329dvdRTRAzORIcUIr1ODqf4Q/view?usp=sharing)
 
-- Rezervasyon Ýþlemleri
-![Booking Video](SignalRWebUI/wwwroot/asset/screenshots/rezervasyon.mp4)
+- ðŸŽ¥ Rezervasyon Ä°ÅŸlemleri
+![Booking Video](https://drive.google.com/file/d/1FgNCwyAGrY9KBozFw3LUkzDIwBo3iwQJ/view?usp=sharing)
 
-- Sistem Rolleri ve Kullanýcý Rol Tanýmlamalarý
-![Administration Processes Video](SignalRWebUI/wwwroot/asset/screenshots/sistem_rolleri_ve_kullanici_rolleri.mp4)
+- ðŸŽ¥ Sistem Rolleri ve KullanÄ±cÄ± Rol TanÄ±mlamalarÄ±
+![Administration Processes Video](https://drive.google.com/file/d/19w6Y77V_9H6LEL5sMa_cNwHDj_oXH2Xl/view?usp=sharing)
 
-- Kullanýcý Mesajlarý
-![Admin Panel](SignalRWebUI/wwwroot/asset/screenshots/kullanici_mesajlari.mp4)
+- ðŸŽ¥ KullanÄ±cÄ± MesajlarÄ±
+![Admin Panel](https://drive.google.com/file/d/1EHcHX7v6OyFi7utZSIiI5zJQ2hwMl5jO/view?usp=sharing)
 
-**Ekran Görüntüleri**
+**Ekran GÃ¶rÃ¼ntÃ¼leri**
 
 ![Screenshot_1](SignalRWebUI/wwwroot/asset/screenshots/main.jpg)
 ![Screenshot_2](SignalRWebUI/wwwroot/asset/screenshots/menu_1.jpg)
@@ -63,7 +63,7 @@ Rezervasyonlarý görüntüleme, düzenleme ve yeni rezervasyon oluþturma iþlemlerini
 ![Screenshot_5](SignalRWebUI/wwwroot/asset/screenshots/register.jpg)
 ![Screenshot_6](SignalRWebUI/wwwroot/asset/screenshots/docker.jpg)
 ![Screenshot_7](SignalRWebUI/wwwroot/asset/screenshots/portainer.jpg)
-**QR Kod okunmasý sýrasýnda bir sorun oluþup masa seçimi yapýlamazsa manuel olarak masa seçimi yapýlýr.**
+**QR Kod okunmasÄ± sÄ±rasÄ±nda bir sorun oluÅŸup masa seÃ§imi yapÄ±lamazsa manuel olarak masa seÃ§imi yapÄ±lÄ±r.**
 ![Screenshot_8](SignalRWebUI/wwwroot/asset/screenshots/default_restaurant_tables.jpg)
 ![Screenshot_9](SignalRWebUI/wwwroot/asset/screenshots/admin_dashboard_.jpg)
 ![Screenshot_10](SignalRWebUI/wwwroot/asset/screenshots/money_case_.jpg)
