@@ -1,0 +1,49 @@
+CREATE TRIGGER SumMoneyCases ON SignalROrderManagementDB.dbo.Orders
+AFTER UPDATE
+AS
+DECLARE @OrderStatus bit
+DECLARE @TotalPrice Decimal(18,2)
+DECLARE @OperationType Nvarchar(MAX) = 'income'
+DECLARE @OperationDate DATETIME
+SELECT @OrderStatus=OrderStatus from inserted
+SELECT @TotalPrice=TotalPrice from inserted
+IF(@OrderStatus=1)
+BEGIN
+	SET @OperationDate = SYSDATETIME()
+	INSERT INTO MoneyCases (TotalAmount,OperationType,OperationDate) VALUES (@TotalPrice,@OperationType,@OperationDate)
+END
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+CREATE TRIGGER UpdateOrderDetailStatus ON SignalROrderManagementDB.dbo.Orders
+AFTER UPDATE
+AS
+BEGIN
+    -- Eðer OrderStatus deðiþmiþse
+    IF EXISTS (
+        SELECT 1
+        FROM Inserted i
+        JOIN Deleted d ON i.OrderID = d.OrderID
+        WHERE i.OrderStatus <> d.OrderStatus
+    )
+    BEGIN
+        -- OrderDetail tablosunu güncelle
+        UPDATE od
+        SET od.OrderStatus = i.OrderStatus
+        FROM SignalROrderManagementDB.dbo.OrderDetails od
+        JOIN Inserted i ON od.OrderID = i.OrderID
+        JOIN Deleted d ON i.OrderID = d.OrderID
+        WHERE i.OrderStatus <> d.OrderStatus;
+    END
+END;
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+CREATE   TRIGGER DecreaseOrderTotalPrice ON SignalROrderManagementDB.dbo.OrderDetails
+AFTER DELETE 
+AS
+DECLARE @OrderId uniqueidentifier
+DECLARE @OrderPrice decimal
+SELECT @OrderID=OrderID FROM deleted
+SELECT @OrderPrice=TotalPrice FROM deleted
+UPDATE SignalROrderManagementDB.dbo.Orders SET TotalPrice=TotalPrice-@OrderPrice WHERE OrderID=@OrderID

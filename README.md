@@ -34,6 +34,10 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 - FluentValidation
 - Mimekit
 
+**NOT**
+- Veri tabanında Orders ve OrderDetails tablolarında trigger kullanılmıştır. SumMoneyCase ile MoneyCase tablosu için, DecreaseOrderPrice ile Orders tablosu için ve UpdateOrderDetailStatus ile OrderDetails tablosundaki OrderStatus sütunu güncellenmiştir.
+- Requirements klasçrü içindeki Database_Triggers isimli dosyadan trigger kodlarını görüntüleyebilirsiniz.
+
 **Projeye Ait Ekran Görüntüleri**
 - Daha fazlası için **SignalRWebUI -> wwwroot -> asset -> screenshots** klasörü altından ulaşabilirsiniz.
 
