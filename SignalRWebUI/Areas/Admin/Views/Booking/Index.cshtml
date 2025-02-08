@@ -1,0 +1,185 @@
+﻿@model BookingViewModel
+
+@{
+    ViewData["Title"] = "Rezervasyonlar";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+}
+
+@section Scripts {
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <script type="text/javascript">
+
+                            $(document).ready(() => {
+                                var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7098/SignalRHub").build();
+
+                                $("#connStatus").text(connection.state);
+
+                                connection.start()
+                                    .then(() => {
+                                        $("#connStatus").text(connection.state);
+                                        setInterval(() => {
+                                            connection.invoke("GetBookingList");
+                                        }, 2000);
+                                    })
+                                    .catch((err) => { console.error(err) });
+
+
+                                connection.on("ReceiveBookingList", (value) => {
+                                    console.log("bookingList: ", value);
+
+                                    let htmlTableString = '';
+                                    let dateOption = {
+                                        year: "2-digit",
+                                        month: "2-digit",
+                                        day: "2-digit",
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                    }
+
+                                    if (value.length > 0) {
+
+                                        htmlTableString = `<div class="col-md-12">
+                                                                                                                                                                                                                                                                                                    <div class="card">
+                                                                                                                                                                                                                                                                                                        <div class="card-header">
+                                                                                                                                                                                                                                                                                                            <div class="card-title">Rezervasyonlar</div>
+                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                        <div class="card-body">
+                                                                                                                                                                                                                                                                                                            <table class="table table-hover">
+                                                                                                                                                                                                                                                                                                                <thead>
+                                                                                                                                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">#</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">Ad / Soyad</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">Telefon</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">Kişi Sayısı</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">Tarih</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col">Rezervasyon Durumu</th>
+                                                                                                                                                                                                                                                                                                                        <th scope="col"></th>
+                                                                                                                                                                                                                                                                                                                    </tr>
+                                                                                                                                                                                                                                                                                                                </thead>
+                                                                                                                                                                                                                                                                                                                <tbody>`;
+
+                                        $.each(value, (index, item) => {
+                                            htmlTableString += `<tr>
+                                                                                                                                                                                                                                                                                                            <td>${item.bookingID}</td>
+                                                                                                                                                                                                                                                                                                            <td>${item.name}</td>
+                                                                                                                                                                                                                                                                                                            <td>${item.phone}</td>
+                                                                                                                                                                                                                                                                                                            <td>${item.personCount}</td>
+                                                                                                                                                                                                                                                                                                                                        <td>${item.date}</td>
+                                                                                                                                                                                                                                                                                                            <td>Aktif</td>
+                                                                                                                                                                                                                                                                                                            <td>
+                                                                                                                                                                                                                                                                                                                <a href="/admin/booking/delete?id=${item.bookingID}" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                                                                                                                                                                                                                                                                                <a href="/admin/booking/update/${item.bookingID}" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                                                                                                                                                                                                                                                                            </td>
+                                                                                                                                                                                                                                                                                                        </tr>`
+                                        });
+
+                                        htmlTableString += `</tbody>
+                                                                                                                                                                                                                                                                                                            </table>
+                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                 </div>`;
+                                    }
+                                    else {
+                                        htmlTableString = `<div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir Bulunmuyor!</div>`
+                                    }
+
+                                    $("#bookingList").html(htmlTableString);
+                                });
+                            });
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row mb-2">
+            <div class="card-action">
+                <a href="/admin/booking/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Rezervasyon Oluştur</a>
+            </div>
+        </div>
+    </div>
+    <div id="bookingList" class="row">
+        @if (Model.ResultBookings != null)
+        {
+            @if (Model.ResultBookings.Count() > 0)
+            {
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Rezervasyonlar</div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Ad / Soyad</th>
+                                        <th scope="col">Telefon</th>
+                                        <th scope="col">Kişi Sayısı</th>
+                                        <th scope="col">Tarih</th>
+                                        <th scope="col">Rezervasyon Durumu</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ResultBookings)
+                                    {
+                                        <tr>
+                                            <td>@item.BookingID</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.PersonCount</td>
+                                            <td>@item.Date</td>
+                                            @if (item.Status)
+                                            {
+                                                if (item.IsConfirmed)
+                                                {
+                                                    <td>Onaylandı</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>İptal Edildi</td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td>Onay Bekliyor</td>
+                                            }
+                                            <td>
+                                                <a href="/admin/booking/delete?id=@item.BookingID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                <a href="/admin/booking/update/@item.BookingID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-danger w-100 text-center">Bu Veriyi Görüntülemek İçin Yetkiniz Bulunmamaktadır!</div>
+        }
+    </div>
+</div>

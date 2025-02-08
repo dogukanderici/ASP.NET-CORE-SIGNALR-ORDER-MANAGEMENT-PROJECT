@@ -1,0 +1,79 @@
+﻿@model NotificationViewModel
+
+@{
+    ViewData["Title"] = "Bildirimler";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            @if (Model.ResultNotifications != null)
+            {
+                @if (Model.ResultNotifications.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Bildirim Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Açıklama</th>
+                                            <th scope="col">Durum</th>
+                                            <th scope="col">Tarih</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultNotifications)
+                                        {
+                                            <tr>
+                                                <td>@item.NotificationID</td>
+                                                <td>@item.Description</td>
+                                                @if (item.Status)
+                                                {
+                                                    <td><div class="badge badge-success">Okundu</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Okunmadı</div></td>
+                                                }
+                                                <td>@item.Date.ToString("dd.MM.yyyy HH:mm")</td>
+                                                <td>
+                                                    <a href="/admin/notification/delete?id=@item.NotificationID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    @if (item.Status)
+                                                    {
+                                                        <a href="/admin/notification/updatestatus/@item.NotificationID/@(!item.Status)" class="btn btn-outline-danger"><i class="la la-close"></i> Okunmadı</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/admin/notification/updatestatus/@item.NotificationID/@(!item.Status)" class="btn btn-outline-success"><i class="la la-check"></i> Okundu</a>
+                                                    }
+                                                    <a href="/admin/notification/update/@item.NotificationID/@item.Status" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Bir Bildiriminiz Bulunmuyor!</div>
+                }
+                <a href="/admin/notification/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Bildirim Ekle</a>
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

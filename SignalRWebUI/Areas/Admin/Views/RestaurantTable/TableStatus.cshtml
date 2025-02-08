@@ -1,0 +1,166 @@
+﻿@model RestaurantTableViewModel
+
+@{
+    ViewData["Title"] = "Masa Durumu";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string tableStatusClass = "card-success";
+    string tableStatusMessage = "Boş";
+    string apiBaseUrl = ViewBag.ApiBaseUrl;
+    string userAccessToken = ViewBag.UserAccessToken;
+}
+
+@* <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script> *@
+
+<style>
+    .custom-border-radius {
+        border-radius: 10px;
+    }
+</style>
+
+@* <div class="container" style="display: none !important;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <script type="text/javascript">
+                        $(document).ready(() => {
+                            var connection = new signalR.HubConnectionBuilder().withUrl("@(apiBaseUrl.ToString())", {
+                                accessTokenFactory: () => "@userAccessToken"
+                            })
+                                .build();
+
+                            $("#connStatus").text(connection.state);
+
+                            connection.start()
+                                .then(() => {
+                                    $("#connStatus").text(connection.state);
+                                    setInterval(() => {
+                                        connection.invoke("SendRestaurantTable");
+                                    }, 5000);
+                                })
+                                .catch((err) => { console.error(err) });
+
+
+                            connection.on("ReceiveRestaurantTableStatus", (value) => {
+                                console.log(value);
+
+                                let tableHtmlString = ''
+
+                                $.each(value, (index, item) => {
+                                    let tableStatusClass = "card-success";
+                                    let tableStatusMessage = "Boş";
+
+                                    if (item.isActive) {
+                                        if (item.status) {
+                                            tableStatusClass = "card-danger";
+                                            tableStatusMessage = "Dolu";
+                                        }
+                                    }
+                                    else {
+                                        tableStatusClass = "card-secondary";
+                                        tableStatusMessage = "Pasif";
+                                    }
+
+                                    tableHtmlString += '<div class="col-md-3">' +
+                                        '<div class="card card-stats custom-border-radius ' + tableStatusClass + '">' +
+                                        '<div class="card-body ">' +
+                                        '<div class="row">' +
+                                        '<div class="col-5">' +
+                                        '<div class="icon-big text-center">' +
+                                        '<i class="la la-cutlery"></i>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="col-7 d-flex align-items-center">' +
+                                        '<div class="numbers">' +
+                                        '<p class="card-category">' +
+                                        (item.isActive ? (item.status ? '<a href="/admin/restauranttable/tableorderdetail?tablename=' + item.name + '" style="text-decoration: none; color: #FFF;">' + item.name + '</a>' : item.name) : item.name) +
+                                        '</p>' +
+                                        '<h4 class="card-title">' + tableStatusMessage + '</h4>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>';
+                                });
+
+                                $("#RestaurantTable").html(tableHtmlString);
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+<div class="content">
+    <div class="container-fluid">
+        <div id="RestaurantTable" class="row">
+            @if (Model.ResultRestaurants != null)
+            {
+                @foreach (var item in Model.ResultRestaurants)
+                {
+                    tableStatusClass = "card-success";
+                    tableStatusMessage = "Boş";
+
+                    if (item.IsActive)
+                    {
+                        if (item.Status)
+                        {
+                            tableStatusClass = "card-danger";
+                            tableStatusMessage = "Dolu";
+                        }
+                    }
+                    else
+                    {
+                        tableStatusClass = "card-secondary";
+                        tableStatusMessage = "Pasif";
+                    }
+
+                    <div class="col-md-3">
+                        <div class="card card-stats custom-border-radius @tableStatusClass">
+                            <div class="card-body ">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="icon-big text-center">
+                                            <i class="la la-cutlery"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category">
+                                                @if (item.IsActive)
+                                                {
+                                                    if (item.Status)
+                                                    {
+                                                        <a href="/admin/restauranttable/tableorderdetail?tablename=@item.RestaurantTableID" style="text-decoration: none; color: #FFF;">
+                                                            @item.Name
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        @item.Name
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    @item.Name
+                                                }
+                                            </p>
+                                            <h4 class="card-title">@tableStatusMessage</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

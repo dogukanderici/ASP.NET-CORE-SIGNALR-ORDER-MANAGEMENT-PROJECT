@@ -1,0 +1,111 @@
+﻿@model MessageViewModel
+
+@{
+    ViewData["Title"] = "Tüm Mesajlar";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <a href="/admin/message/create" class="btn btn-success">Yeni Mesaj</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Gelen Kutusu</div>
+                    </div>
+                    <div class="card-body">
+
+                        @if (Model.ResultInboxMessages != null)
+                        {
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Gönderen</th>
+                                        <th scope="col">Konu</th>
+                                        <th scope="col">Tarih</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ResultInboxMessages.Count() > 0)
+                                    {
+                                        @foreach (var item in Model.ResultInboxMessages)
+                                        {
+                                            <tr>
+                                                <td>@item.SenderMail</td>
+                                                <td>@item.MessageSubject</td>
+                                                <td>@(item.SendDate.ToString("dd.MM.yyyy HH:mm"))</td>
+                                                <td><a href="/admin/message/update/@item.MainMessageID/@item.SenderMail" class="btn btn-info"><i class="la la-search-plus" aria-hidden="true"></i></a></td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="4"><div class="alert alert-info text-center">Gelen Kutunuzda Mesaj Bulunmuyor!</div></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Giden Kutusu</div>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.ResultInboxMessages != null)
+                        {
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Alıcı</th>
+                                        <th scope="col">Konu</th>
+                                        <th scope="col">Tarih</th>
+                                        <th scope="col">İncele</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ResultOutboxMessages.Count() > 0)
+                                    {
+                                        @foreach (var item in Model.ResultOutboxMessages)
+                                        {
+                                            <tr>
+                                                <td>@item.ReceiverMail</td>
+                                                <td>@item.MessageSubject</td>
+                                                <td>@(item.SendDate.ToString("dd.MM.yyyy HH:mm"))</td>
+                                                <td><a href="/admin/message/detail/@item.MessageID" class="btn btn-info"><i class="la la-eye" aria-hidden="true"></i></a></td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="4"><div class="alert alert-info text-center">Giden Kutunuzda Bir Mesaj Bulunmuyor!</div></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@model ContactViewModel
+
+@{
+    ViewData["Title"] = "İletişim Bilgisi Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateContactForm" asp-area="Admin" asp-controller="Contact" asp-action="UpdateContact" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">İletişim Bilgisi Güncelleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                @Html.HiddenFor(x => x.UpdateContact.ContactID)
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateContact.Location">Konum</label>
+                                    <input asp-for="UpdateContact.Location" type="text" class="form-control input-square" placeholder="Konum">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateContact.Phone">Telefon</label>
+                                    <input asp-for="UpdateContact.Phone" type="text" class="form-control input-square" placeholder="Telefon">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateContact.Mail">E-Posta</label>
+                                    <input asp-for="UpdateContact.Mail" type="email" class="form-control input-square" placeholder="E-Posta">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="UpdateContact.Description">Açıklama</label>
+                                    <textarea asp-for="UpdateContact.Description" rows="5" class="form-control input-square" placeholder="Açıklama"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/contact" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,72 @@
+﻿@model SocialMediaViewModel
+
+@{
+    ViewData["Title"] = "Yeni Sosyal Medya Hesabı Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewSocialMediaForm" asp-area="Admin" asp-controller="SocialMedia" asp-action="CreateSocialMedia" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Sosyal Medya Hesabı Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateSocialMedia.Title">Başlık</label>
+                                    <input asp-for="CreateSocialMedia.Title" type="text" class="form-control input-square" placeholder="Başlık">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateSocialMedia.Url">Url</label>
+                                    <input asp-for="CreateSocialMedia.Url" type="text" class="form-control input-square" placeholder="Url">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateSocialMedia.Icon">İkon</label>
+                                    <input asp-for="CreateSocialMedia.Icon" type="text" class="form-control input-square" placeholder="İkon">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateSocialMedia.Status">Durum</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input asp-for="CreateSocialMedia.Status" class="form-check-input" type="checkbox">
+                                            <span class="form-check-sign">Aktif</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/socialmedia" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

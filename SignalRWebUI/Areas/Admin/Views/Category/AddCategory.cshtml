@@ -1,0 +1,52 @@
+﻿@model CategoryViewModel
+
+@{
+    ViewData["Title"] = "Yeni Kategori Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewCategoryForm" asp-area="Admin" asp-controller="Category" asp-action="AddCategory" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@ViewBag.MainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Kategori Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label asp-for="CreateCategory.CategoryName">Kategori Adı</label>
+                                <input asp-for="CreateCategory.CategoryName" type="text" class="form-control input-square" placeholder="Kategori Adı">
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="/admin/category" class="btn btn-outline-danger">Vazgeç</a>
+                            <button type="submit" class="btn btn-success">Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

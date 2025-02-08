@@ -1,0 +1,122 @@
+﻿@model HelpDeskViewModel
+
+@{
+    ViewData["Title"] = "Help Desk Mesaj Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateHelpDeskForm" asp-area="Admin" asp-controller="HelpDesk" asp-action="UpdateHelpDesk" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@ViewBag.MainTitle</h5>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="card-title">Help Desk Mesajı Düzenleme</div>
+                            <div class="card-title">Gönderim Tarihi: @Model.UpdateHelpDesk.SendDate</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            @Html.HiddenFor(c => c.UpdateHelpDesk.HelpDeskID)
+                            @Html.HiddenFor(c => c.UpdateHelpDesk.ReplyID)
+                            @Html.HiddenFor(c => c.UpdateHelpDesk.SendDate)
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateHelpDesk.NameSurname">Ad / Soyad</label>
+                                    <input asp-for="UpdateHelpDesk.NameSurname" type="text" class="form-control input-square" style="user-select: none !important">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateHelpDesk.Mail">E-Posta</label>
+                                    <input asp-for="UpdateHelpDesk.Mail" type="text" class="form-control input-square" style="user-select: none !important">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateHelpDesk.Phone">Telefon</label>
+                                    <input asp-for="UpdateHelpDesk.Phone" type="text" class="form-control input-square" style="user-select: none !important">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateHelpDesk.Subject">Konu</label>
+                                    <input asp-for="UpdateHelpDesk.Subject" type="text" class="form-control input-square" style="user-select: none !important">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateHelpDesk.MessageContent">İçerik</label>
+                                    <textarea asp-for="UpdateHelpDesk.MessageContent" rows="4" class="form-control input-square" style="user-select: none !important"></textarea>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateHelpDesk.IsRead">Mesaj Okundu Mu?</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input asp-for="@Model.UpdateHelpDesk.IsRead" class="form-check-input" type="checkbox">
+                                            <span class="form-check-sign">Okundu Mu?</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="/admin/helpdesk" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                            <button type="submit" class="btn btn-success"><i class="la la-edit"></i> Güncelle</button>
+                            <a href="/admin/helpdesk/reply/@Model.UpdateHelpDesk.HelpDeskID" class="btn btn-info"><i class="la la-reply"></i> Cevapla</a>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.HelpDeskList != null)
+                {
+                    @if (Model.HelpDeskList.Count() > 0)
+                    {
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="card-title">Gönderilen Cevaplar</div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Ad / Soyad</th>
+                                                <th scope="col">Tarih</th>
+                                                <th scope="col">Konu</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.HelpDeskList)
+                                            {
+                                                <tr>
+                                                    <td>@item.NameSurname</td>
+                                                    <td>@item.SendDate</td>
+                                                    <td>@item.Subject</td>
+                                                    <td>
+                                                        <a href="/admin/helpdesk/update/@item.HelpDeskID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</form>

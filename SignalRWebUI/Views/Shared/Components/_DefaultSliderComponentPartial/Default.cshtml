@@ -1,0 +1,56 @@
+﻿@model DefaultFeatureViewModel
+
+@{
+    string sliderClassName = "carousel-item active";
+}
+
+<section class="slider_section ">
+    <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        @if (Model.HttpResponseMessage == null)
+        {
+            <div class="carousel-inner">
+                @foreach (var item in Model.ResultFeatures)
+                {
+                    <div class="@sliderClassName">
+                        <div class="container ">
+                            <div class="row">
+                                <div class="col-md-7 col-lg-6 ">
+                                    <div class="detail-box">
+                                        <h1>@item.Title</h1>
+                                        <p>@item.Description</p>
+                                        <div class="btn-box">
+                                            <a href="/menu" class="btn1">Hemen Sipariş Verin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    sliderClassName = "carousel-item";
+                }
+            </div>
+            <div class="container">
+                <ol class="carousel-indicators">
+                    @for (int i = 0; i < Model.ResultFeatures.Count(); i++)
+                    {
+                        if (i == 0)
+                        {
+                            <li data-target="#customCarousel@(i + 1)" data-slide-to="@i" class="active"></li>
+                        }
+                        else
+                        {
+                            <li data-target="#customCarousel@(i + 1)" data-slide-to="@i"></li>
+                        }
+                    }
+                </ol>
+            </div>
+        }
+        else
+        {
+            <p class="alert alert-danger">@Model.HttpResponseMessage</p>
+        }
+    </div>
+
+</section>
+</div>

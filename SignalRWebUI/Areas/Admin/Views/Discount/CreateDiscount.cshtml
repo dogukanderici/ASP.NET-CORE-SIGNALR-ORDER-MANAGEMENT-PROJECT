@@ -1,0 +1,81 @@
+﻿@model DiscountViewModel
+
+@{
+    ViewData["Title"] = "Yeni İndirim Kuponu Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewDiscountForm" asp-area="Admin" asp-controller="Discount" asp-action="CreateDiscount" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni İndirim Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateDiscountData.Title">İndirim Başlığı</label>
+                                    <input asp-for="CreateDiscountData.Title" type="text" class="form-control input-square" placeholder="İndirim Başlığı">
+                                    <span class="text text-danger" asp-validation-for="CreateDiscountData.Title"></span>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateDiscountData.Description">İndirim Açıklaması</label>
+                                    <input asp-for="CreateDiscountData.Description" type="text" class="form-control input-square" placeholder="İndirim Açıklaması">
+                                    <span class="text text-danger" asp-validation-for="CreateDiscountData.Description"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateDiscountData.Amount">İndirim Miktarı ( % )</label>
+                                    <input asp-for="CreateDiscountData.Amount" type="number" min="1" max="100" class="form-control input-square" placeholder="İndirim Miktarı ( % )">
+                                    <span class="text text-danger" asp-validation-for="CreateDiscountData.Amount"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateDiscountData.LastDay">Geçerlilik Tarihi</label>
+                                    <input asp-for="CreateDiscountData.LastDay" type="datetime-local" min="1" max="100" class="form-control input-square">
+                                    <span class="text text-danger" asp-validation-for="CreateDiscountData.LastDay"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateDiscountData.IsActive">İndirim Durumu</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input asp-for="CreateDiscountData.IsActive" class="form-check-input" type="checkbox">
+                                            <span class="form-check-sign">Aktif</span>
+                                            <span class="text text-danger" asp-validation-for="CreateDiscountData.IsActive"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/discount" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

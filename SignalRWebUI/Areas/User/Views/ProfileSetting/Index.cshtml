@@ -1,0 +1,50 @@
+﻿@model UserEditDto
+
+@{
+    ViewData["Title"] = "Profilim";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+}
+
+<form id="UserDataEditForm" asp-area="User" asp-controller="ProfileSetting" asp-action="Index" method="post">
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Kullanıcı Bilgisi Güncelleme</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @Html.HiddenFor(x => x.UserData.Id)
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UserData.Name">Adınız</label>
+                                    <input asp-for="UserData.Name" type="text" class="form-control input-square" placeholder="Adınız">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UserData.Surname">Soyadınız</label>
+                                    <input asp-for="UserData.Surname" type="text" class="form-control input-square" placeholder="Soyadınız">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UserData.UserName">Kullanıcı Adınız</label>
+                                    <input asp-for="UserData.UserName" type="text" class="form-control input-square" placeholder="Kullanıcı Adınız">
+                                </div>
+                                <div class="col-md-2 form-group">
+                                    <label for="UserPasswordChange">Şifre Değişikliği</label>
+                                    <a href="/user/profilesetting/changepassword" id="UserPasswordChange" class="form-control btn btn-primary"><i class="la la-key"></i> Şifre Değiştir</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/user/profilesetting" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-edit"></i> Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

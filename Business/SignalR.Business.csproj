@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="8.1.1" />
+    <PackageReference Include="Duende.AccessTokenManagement" Version="3.0.1" />
+    <PackageReference Include="Duende.IdentityServer.Storage" Version="7.0.8" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\SignalR.DataAccess.csproj" />
+    <ProjectReference Include="..\Entities\SignalR.Entities.csproj" />
+    <ProjectReference Include="..\SignalR.Dtos\SignalR.Dtos.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Utilities\Validations\BasketValidations\" />
+  </ItemGroup>
+
+</Project>

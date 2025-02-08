@@ -1,0 +1,235 @@
+﻿@using System.Globalization
+@model BasketViewModel
+
+@{
+    Layout = null;
+    int count = 0;
+    int table = 1;
+}
+
+<!DOCTYPE html>
+<html>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+    @await Component.InvokeAsync("_UILayoutNavbarComponentPartial")
+    </div>
+
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12 mt-3">
+                <nav class="breadcrumb bg-dark mb-30">
+                    <a class="breadcrumb-item text-white" href="/Default">Ana Sayfa</a>
+                    <a class="breadcrumb-item text-white" href="/Menu">Menü</a>
+                    <span class="breadcrumb-item active">Sepetim</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                @if (Model.BasketListData.Count() > 0)
+                {
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-danger my-2" onclick="deleteBasket(@table)"><i class="fa fa-trash" aria-hidden="true"></i> Sepeti Sil</button>
+                    </div>
+                }
+                <table class="table table-light table-borderless table-hover text-center mb-0">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Ürün Adı</th>
+                            <th>Adet</th>
+                            <th>Fiyat</th>
+                            <th>Toplam</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        @foreach (var item in Model.BasketListData)
+                        {
+                            count++;
+
+                            <tr>
+                                <td>@count</td>
+                                <td class="align-middle">@item.Product.ProductName</td>
+                                <td class="align-middle">@item.Count</td>
+                                <td class="align-middle">@item.Price.ToString("C", new CultureInfo("tr-TR"))</td>
+                                <td class="align-middle">@item.TotalPrice.ToString("C", new CultureInfo("tr-TR"))</td>
+                                <td><button class="btn btn-danger" onclick="removeItemFromBasket(@item.BasketID,@item.RestaurantTableID)"><i class="fa fa-remove" aria-hidden="true"></i></button></td>
+                            </tr>
+                        }
+
+                        @if (Model.BasketListData.Count() < 1)
+                        {
+                            <tr>
+                                <td class="align-middle bg-light text-dark" colspan="6"> Masaya Ait Ürün Bulunamadı! </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-4 mb-5">
+                <div class="col-md-12">
+                    <form id="CouponCodeApplyForm" method="post">
+                        <div class="row d-flex justify-content-evenly align-items-center">
+                            <div class="col-md-7 form-group">
+                                <input id="DiscountCouponCode" class="form-control" placeholder="Kupon Kodu" />
+                            </div>
+                            <div class="col-md-5 form-group">
+                                <a href="#" onclick="applyCouponCode()" class="form-control btn btn-warning">Kodu Uygula</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    @if (Model.HttpResponseMessage != 0)
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="alert alert-danger text-center">@Model.ApiResponseMessage</p>
+                            </div>
+                        </div>
+                    }
+                    <form id="SendOrderForm" asp-controller="Order" asp-action="SendOrder" method="post">
+                        @Html.Hidden("BasketViewModelJson", Newtonsoft.Json.JsonConvert.SerializeObject(Model))
+                        <div class="row d-flex justify-content-between align-items-center">
+                            <div class="col-md-12">
+                                <h5 class="breadcrumb bg-warning text-dark p-2">Sipariş Özeti</h5>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="bg-light p-3 col-md-12 rounded">
+                                    <div class="d-flex justify-content-between py-1 px-2">
+                                        <h6>Uygulanan İndirim Kodu</h6>
+                                        @if (Model.DiscountData.Title == null)
+                                        {
+                                            <h6>-</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6>@Model.DiscountData.Title</h6>
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-between py-1 px-2">
+                                        <h6>Uygulanan İndirim Tutarı</h6>
+                                        @if (Model.DiscountData.Amount == 0)
+                                        {
+                                            <h6>₺ 0</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6>@(((Model.TotalBasketPrice * Model.DiscountData.Amount) / 100).ToString("C", new CultureInfo("tr-TR")))</h6>
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-between py-1 px-2">
+                                        <h6>İndirimsiz Toplam Tutar</h6>
+                                        <h6>@Model.TotalBasketPrice.ToString("C", new CultureInfo("tr-TR"))</h6>
+                                    </div>
+                                    <hr class="my-2 border-secondary">
+                                    <div class="d-flex justify-content-between py-1 px-2">
+                                        <h6>Toplam Tutar</h6>
+                                        <h6>
+                                            @(Model.TotalBasketPriceWithDiscount.ToString("C", new CultureInfo("tr-TR")))
+                                        </h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="form-control btn btn-warning">Sipariş Ver</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+
+    @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+    @* Sweet Alert *@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function removeItemFromBasket(basketID, tableID) {
+
+            $.ajax({
+                type: "DELETE",
+                url: `/baskets/removeitem?id=${basketID}&${tableID}`,
+                data: { id: basketID, tableID: tableID },
+                success: function (successResponse) {
+                    console.log("İşlem Başarılı", successResponse);
+
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Ürün Sepetinizden Silindi!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).
+                        then(() => {
+                            window.location.reload();
+                        });
+                },
+                error: function (errorResponse) {
+                    console.log("İşlem Başarılı", errorResponse);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: "Bir Sorun Oluştu!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        function deleteBasket(tableID) {
+
+            $.ajax({
+                type: "DELETE",
+                url: `/baskets/delete?id=${tableID}`,
+                data: { id: tableID },
+                success: function (successResponse) {
+                    console.log("İşlem Başarılı", successResponse);
+
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Sepetiniz Silindi!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).
+                        then(() => {
+                            window.location.reload();
+                        });
+                },
+                error: function (errorResponse) {
+                    console.log("İşlem Başarılı", errorResponse);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: "Bir Sorun Oluştu!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        function applyCouponCode() {
+            let discountCouponCode = $("#DiscountCouponCode").val();
+
+            console.log("DiscountCouponCode: ", discountCouponCode);
+
+            window.location.href = `/baskets/codeindex?code=${discountCouponCode}`;
+        }
+    </script>
+
+</body>
+</html>

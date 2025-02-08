@@ -1,0 +1,91 @@
+﻿@model MessageViewModel
+
+@{
+    ViewData["Title"] = "Mesaj Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string customerMail = (string)ViewBag.CustomerMail;
+    string userMail = (string)ViewBag.UserMail;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateMessageForm" asp-area="Admin" asp-controller="Message" asp-action="UpdateMessage" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row display-flex justify-content-center align-items-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Müşteri: @customerMail</div>
+                        </div>
+                        @Html.HiddenFor(x => x.UpdateMessage.MessageID)
+                        @Html.HiddenFor(x => x.UpdateMessage.MainMessageID)
+                        @Html.HiddenFor(x => x.UpdateMessage.MessageSubject)
+                        @Html.HiddenFor(x => x.UpdateMessage.ReceiverMail)
+                        @Html.HiddenFor(x => x.UpdateMessage.SenderMail)
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                @if (Model.ResultInboxMessages.Count() > 0)
+                                {
+                                    @foreach (var item in Model.ResultInboxMessages)
+                                    {
+                                        if (item.SenderMail != userMail)
+                                        {
+                                            <div class="col-12 d-flex justify-content-start align-items-center">
+                                                <div class="col-6">
+                                                    <div class="alert alert-secondary text-dark text-left">@item.MessageContent</div>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-12 d-flex justify-content-end align-items-center">
+                                                <div class="col-6">
+                                                    <div class="alert alert-success text-left">@item.MessageContent</div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info text-center">Herhangi Bir Mesaj Bulunmuyor!</div>
+                                }
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateMessage.MessageContent" id="ReplyMessage">Mesajınız</label>
+                                    <textarea asp-for="UpdateMessage.MessageContent" type="text" class="form-control input-square" rows="5" placeholder="Yanıtınızı Buraya Yazabilirsiniz"></textarea>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <div class="card-action">
+                                        <a href="admin/message/getallmessages" class="btn btn-outline-danger"><i class="la la-remove"></i> Vazgeç</a>
+                                        <button type="submit" class="btn btn-success"><i class="la la-reply"></i> Cevapla</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

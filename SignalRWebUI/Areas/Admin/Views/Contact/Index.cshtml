@@ -1,0 +1,66 @@
+﻿@model ContactViewModel
+
+@{
+    ViewData["Title"] = "İletişim";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row">
+            @if (Model.ResultContacts != null)
+            {
+                @if (Model.ResultContacts.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">İletişim Bilgileri</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Konum</th>
+                                            <th scope="col">Telefon</th>
+                                            <th scope="col">Mail</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultContacts)
+                                        {
+                                            <tr>
+                                                <td>@item.ContactID</td>
+                                                <td>@item.Location</td>
+                                                <td>@item.Phone</td>
+                                                <td>@item.Mail</td>
+                                                <td>
+                                                    <a href="/admin/contact/delete?id=@item.ContactID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/contact/update/@item.ContactID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+                    <a href="/admin/contact/create" class="btn btn-success"><i class="la la-plus"></i> İletişim Bilgisi Ekle</a>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">Bu Veriyi Görüntülemek İçin Yetkiniz Bulunmamaktadır!</div>
+            }
+        </div>
+    </div>
+</div>

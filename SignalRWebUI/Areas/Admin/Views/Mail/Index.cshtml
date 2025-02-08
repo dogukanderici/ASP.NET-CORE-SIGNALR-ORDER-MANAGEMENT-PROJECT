@@ -1,0 +1,45 @@
+﻿@model SendMailViewModel
+
+@{
+    ViewData["Title"] = "Mail Gönderimi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+}
+
+
+<form id="SendNewMailForm" asp-area="Admin" asp-controller="Mail" asp-action="Index" method="post">
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Rezervasyon Maili Gönderimi</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="CreateNewMail.ReceiverMail">Alıcı E-Posta Adresi</label>
+                                    <input asp-for="CreateNewMail.ReceiverMail" type="text" class="form-control input-square" placeholder="Alıcı E-Posta Adresi">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="CreateNewMail.Subject">Konu</label>
+                                    <input asp-for="CreateNewMail.Subject" type="text" class="form-control input-square" placeholder="Konu">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="CreateNewMail.Body">İçerik</label>
+                                    <textarea asp-for="CreateNewMail.Body" rows="6" class="form-control input-square" placeholder="İçerik"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/dashboard" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-send"></i> Gönder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

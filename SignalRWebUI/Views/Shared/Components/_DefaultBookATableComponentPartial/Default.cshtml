@@ -1,0 +1,66 @@
+﻿@using System.Net
+@model DefaultBookingViewModel
+
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+                Rezervasyon Yapın
+            </h2>
+        </div>
+        @if (Model != null)
+        {
+            if (Model.ApiResponseMessage != null)
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (Model.HttpResponseMessage != HttpStatusCode.OK)
+                        {
+                            <div class="alert alert-warning text-center">@Model.ApiResponseMessage</div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-success text-center">Rezervasyonunuz Alınmıştır. Onay Maili Gönderilecektir!</div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form id="createBookingForm" asp-controller="BookATable" asp-action="CreateBooking">
+                        <div>
+                            <input asp-for="CreateBookingData.Name" type="text" class="form-control" placeholder="Adınız" />
+                        </div>
+                        <div>
+                            <input asp-for="CreateBookingData.Phone" type="text" class="form-control" placeholder="Telefon" />
+                        </div>
+                        <div>
+                            <input asp-for="CreateBookingData.Mail" type="email" class="form-control" placeholder="E-Posta" />
+                        </div>
+                        <div>
+                            <select asp-for="CreateBookingData.PersonCount" class="form-control nice-select wide">
+                                <option value="" disabled selected>Kişi Sayısını Seçiniz</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input asp-for="CreateBookingData.Date" type="datetime-local" class="form-control">
+                        </div>
+                        <div class="btn_box">
+                            <button type="submit">Rezervasyon Yapın</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="map_container ">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1115.823058220985!2d30.510567314227686!3d39.780555743789634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc15378f78e799%3A0xa6a5b551336d6336!2sUlus%20meydan%C4%B1!5e0!3m2!1str!2str!4v1737060720860!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

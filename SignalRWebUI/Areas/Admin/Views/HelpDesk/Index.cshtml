@@ -1,0 +1,72 @@
+﻿@model HelpDeskViewModel
+
+@{
+    ViewData["Title"] = "Help Desk";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            @if (Model.HelpDeskList != null)
+            {
+                @if (Model.HelpDeskList.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            @* <div class="card-header">
+                    <div class="card-title"> </div>
+                    </div> *@
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Ad / Soyad</th>
+                                            <th scope="col">E-Posta</th>
+                                            <th scope="col">Telefon</th>
+                                            <th scope="col">Konu</th>
+                                            <th scope="col">Durum</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.HelpDeskList)
+                                        {
+                                            <tr>
+                                                <td>@item.NameSurname</td>
+                                                <td>@item.Mail</td>
+                                                <td>@item.Phone</td>
+                                                <td>@item.Subject</td>
+                                                @if (item.IsRead)
+                                                {
+                                                    <td><div class="badge badge-success">Okundu</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Okunmadı</div></td>
+                                                }
+                                                <td>
+                                                    <a href="/admin/helpdesk/delete?id=@item.HelpDeskID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/helpdesk/update/@item.HelpDeskID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir Help Desk Mesajı Bulunmuyor!</div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+﻿@model DailyDiscountViewModel
+
+@{
+    ViewData["Title"] = "Yeni Günlük İndirim Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewDailyDiscountForm" asp-area="Admin" asp-controller="DailyDiscount" asp-action="CreateDailyDiscount" method="post" enctype="multipart/form-data">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Günlük İndirim Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateDailyDiscount.Title">Başlık</label>
+                                    <input asp-for="CreateDailyDiscount.Title" type="text" class="form-control input-square" placeholder="Başlık">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateDailyDiscount.Description">Açıklama</label>
+                                    <input asp-for="CreateDailyDiscount.Description" type="text" class="form-control input-square" placeholder="Açıklama">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateDailyDiscount.Amount">Fiyat</label>
+                                    <input asp-for="CreateDailyDiscount.Amount" type="number" min="0" class="form-control input-square" placeholder="Fiyat">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateDailyDiscount.Image">İndirim Görseli</label>
+                                    <input asp-for="CreateDailyDiscount.Image" type="file" class="form-control input-square">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/dailydiscount" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,81 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Yeni Ürün Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    List<SelectListItem> categoryList = (List<SelectListItem>)ViewBag.CategoryList;
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewProductForm" asp-area="Admin" asp-controller="Product" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Ürün Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateProduct.ProductName">Ürün Adı</label>
+                                    <input asp-for="CreateProduct.ProductName" type="text" class="form-control input-square" placeholder="Ürün Adı">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateProduct.CategoryID">Ürün Kategorisi</label>
+                                    <select asp-for="CreateProduct.CategoryID" asp-items="@categoryList" class="form-control"></select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateProduct.Price">Ürün Fiyatı</label>
+                                    <input asp-for="CreateProduct.Price" type="number" min="0" class="form-control input-square" placeholder="Ürün Fiyatı">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateProduct.Image">Ürün Görseli</label>
+                                    <input asp-for="CreateProduct.Image" type="file" class="form-control input-square">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateProduct.ProductStatus">Ürün Durumu</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input asp-for="CreateProduct.ProductStatus" class="form-check-input" type="checkbox">
+                                            <span class="form-check-sign">Aktif</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="CreateProduct.Description">Ürün Açıklaması</label>
+                                    <textarea asp-for="CreateProduct.Description" type="text" class="form-control input-square" rows="5" placeholder="Ürün Açıklaması"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/product" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

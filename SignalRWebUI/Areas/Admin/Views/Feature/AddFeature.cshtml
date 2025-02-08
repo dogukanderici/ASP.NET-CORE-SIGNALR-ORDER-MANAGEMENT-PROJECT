@@ -1,0 +1,68 @@
+﻿@model FeatureViewModel
+
+@{
+    ViewData["Title"] = "Yeni Öne Çıkan Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewFeatureForm" asp-area="Admin" asp-controller="Feature" asp-action="AddFeature" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Öne Çıkan Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateFeature.Title">Başlık</label>
+                                    <input asp-for="CreateFeature.Title" type="text" class="form-control input-square" placeholder="Başlık">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateFeature.Description">Açıklama</label>
+                                    <input asp-for="CreateFeature.Description" type="text" class="form-control input-square" placeholder="Açıklama">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateFeature.Status">Ürün Durumu</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input asp-for="CreateFeature.Status" class="form-check-input" type="checkbox">
+                                            <span class="form-check-sign">Aktif</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/feature" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

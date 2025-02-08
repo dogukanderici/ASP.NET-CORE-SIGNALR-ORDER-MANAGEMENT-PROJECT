@@ -1,0 +1,78 @@
+﻿@model TestimonialViewModel
+
+@{
+    ViewData["Title"] = "Yorum Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateTestimonialForm" asp-area="Admin" asp-controller="Testimonial" asp-action="UpdateTestimonial" method="post" enctype="multipart/form-data">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yorum Güncelleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                @Html.HiddenFor(x => x.UpdateTestimonial.TestimonialID)
+                                @Html.HiddenFor(x => x.UpdateTestimonial.ImageUrl)
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateTestimonial.Name">Kullanıcı Adı</label>
+                                    <input asp-for="UpdateTestimonial.Name" type="text" class="form-control input-square" placeholder="Kullanıcı Adı">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateTestimonial.Image">Yorum Görseli <a href="~/asset/defaultimage/@Model.UpdateTestimonial.ImageUrl" target="_blank"><i class="la la-image"></i></a></label>
+                                    <input asp-for="UpdateTestimonial.Image" type="file" class="form-control input-square">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateTestimonial.Status">Yorum Durumu</label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input asp-for="UpdateTestimonial.Status" class="form-check-input" type="checkbox">
+                                            <span class="form-check-sign">Aktif</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="UpdateTestimonial.Title">Yorum Başlığı</label>
+                                    <input asp-for="UpdateTestimonial.Title" type="text" class="form-control input-square" placeholder="Yorum Başlığı">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="UpdateTestimonial.Comment">Açıklama</label>
+                                    <textarea asp-for="UpdateTestimonial.Comment" rows="5" class="form-control input-square" placeholder="Açıklama"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/testimonial" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

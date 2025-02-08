@@ -1,0 +1,44 @@
+﻿@model RoleDefinitionViewModel
+
+@{
+    ViewData["Title"] = "Yeni Rol Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<form id="AddNewRoleForm" asp-area="Admin" asp-controller="Role" asp-action="Create" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>Yeni Sistem Rolü</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Sistem Rolü Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger">@Model.HttpResponseMessage</p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="@Model.CreateRoleDefinition.Name">Rol Adı</label>
+                                    <input asp-for="@Model.CreateRoleDefinition.Name" type="text" class="form-control input-square" placeholder="Rol Adı">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/role" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

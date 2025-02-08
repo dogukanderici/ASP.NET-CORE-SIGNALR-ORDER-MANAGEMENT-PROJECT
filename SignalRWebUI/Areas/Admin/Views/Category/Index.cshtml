@@ -1,0 +1,70 @@
+﻿@model CategoryViewModel
+
+@{
+    ViewData["Title"] = "Kategoriler";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            @if (Model.ResultCategories != null)
+            {
+                @if (Model.ResultCategories.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Kategori Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Kategori Adı</th>
+                                            <th scope="col">Durumu</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultCategories)
+                                        {
+                                            <tr>
+                                                <td>@item.CategoryID</td>
+                                                <td>@item.CategoryName</td>
+                                                @if (item.CategoryStatus)
+                                                {
+                                                    <td><div class="badge badge-success">Aktif</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Pasif</div></td>
+                                                }
+                                                <td>
+                                                    <a href="/admin/category/delete?id=@item.CategoryID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/category/update/@item.CategoryID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir Kategori Bulunmuyor!</div>
+                }
+
+                <a href="/admin/category/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Kategori Ekle</a>
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

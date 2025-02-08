@@ -1,0 +1,60 @@
+﻿@model UserHelpDeskViewModel
+
+@{
+    ViewData["Title"] = "Yeni Help Desk Mesajı";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+}
+
+
+<form id="CreateHelpDeskForm" asp-area="User" asp-controller="HelpDesk" asp-action="CreateNewHelpDeskMessage" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="card-title">Help Desk Mesajı Oluştur</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger">@Model.HttpResponseMessage</p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateHelpDesk.NameSurname">Ad / Soyad</label>
+                                    <input asp-for="CreateHelpDesk.NameSurname" type="text" class="form-control input-square">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateHelpDesk.Mail">E-Posta</label>
+                                    <input asp-for="CreateHelpDesk.Mail" type="text" class="form-control input-square">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateHelpDesk.Phone">Telefon</label>
+                                    <input asp-for="CreateHelpDesk.Phone" type="text" class="form-control input-square">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateHelpDesk.Subject">Konu</label>
+                                    <input asp-for="CreateHelpDesk.Subject" type="text" class="form-control input-square">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateHelpDesk.MessageContent">İçerik</label>
+                                    <textarea asp-for="CreateHelpDesk.MessageContent" rows="4" class="form-control input-square"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="/user/helpdesk" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                            <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Gönder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,106 @@
+﻿@model RestaurantTableViewModel
+
+@{
+    ViewData["Title"] = "Masa Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateRestaurantTableForm" asp-area="Admin" asp-controller="RestaurantTable" asp-action="UpdateRestaurantTable" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Masa Bilgisi Güncelleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                @Html.HiddenFor(x => x.UpdateRestaurant.RestaurantTableID)
+                                @Html.HiddenFor(x => x.UpdateRestaurant.QRCodeForTable)
+
+                                @if (Model.UpdateRestaurant.QRCodeForTable == null || Model.UpdateRestaurant.QRCodeForTable == "")
+                                {
+                                    <div class="col-md-12 form-group">
+                                        <div class="alert alert-warning text-center">Masaya Ait QR Kod Güncelle Butonuna Tıklandığında Masa Adından Oluşturulacaktır!</div>
+                                    </div>
+                                }
+
+                                <div class="col-md-3 form-group">
+                                    <label asp-for="UpdateRestaurant.Name">Masa Adı</label>
+                                    <input asp-for="UpdateRestaurant.Name" type="text" class="form-control input-square" placeholder="Masa Adı">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label asp-for="UpdateRestaurant.PersonCount">Kişi Sayısı</label>
+                                    <input asp-for="UpdateRestaurant.PersonCount" type="number" min="2" max="4" class="form-control input-square" placeholder="Kişi Sayısı">
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label asp-for="UpdateRestaurant.Status">Masa Durumu</label>
+                                    <p class="demo">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" asp-for="UpdateRestaurant.IsActive">
+                                            <span class="form-check-sign">Masa Durumu</span>
+                                        </label>
+                                    </p>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label asp-for="UpdateRestaurant.Status">Kullanım Durumu</label>
+                                    <p class="demo">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" asp-for="UpdateRestaurant.Status">
+                                            <span class="form-check-sign">Kullanım Durumu</span>
+                                        </label>
+                                    </p>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label asp-for="@Model.CreateNewQRCodeForUpdate">QR Kod</label>
+                                    <p class="demo">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" asp-for="@Model.CreateNewQRCodeForUpdate">
+                                            <span class="form-check-sign">Yeni QR Kod Oluşturulsun Mu?</span>
+                                        </label>
+                                    </p>
+                                </div>
+                                @if (@Model.UpdateRestaurant.QRCodeForTable != null)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label asp-for="UpdateRestaurant.Name">Masa QR Code</label>
+                                            <img src="@Model.UpdateRestaurant.QRCodeForTable" style="width:150px; height:150px;" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/restauranttable" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-edit"></i> Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+

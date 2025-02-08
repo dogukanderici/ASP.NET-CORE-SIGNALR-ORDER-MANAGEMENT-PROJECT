@@ -1,0 +1,84 @@
+﻿@model BookingViewModel
+
+@{
+    ViewData["Title"] = "Rezervasyon Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateBookingForm" asp-area="Admin" asp-controller="Booking" asp-action="UpdateBooking" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Rezervasyon Oluşturma</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                @if (validationErrors != null)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p class="alert alert-danger text-center">
+
+                                                @foreach (var errorItem in validationErrors)
+                                                {
+                                                    <span>@errorItem</span>
+                                                    @if (errorItem != validationErrors.Last())
+                                                    {
+                                                        <br />
+                                                    }
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <div class="row">
+                                @Html.HiddenFor(x => x.UpdateBooking.BookingID)
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateBooking.Name">Müşteri Adı / Soyadı</label>
+                                    <input asp-for="UpdateBooking.Name" type="text" class="form-control input-square" placeholder="Ad / Soyad">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateBooking.Phone">Telefon</label>
+                                    <input asp-for="UpdateBooking.Phone" type="text" class="form-control input-square" placeholder="Telefon">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateBooking.Mail">E-Posta</label>
+                                    <input asp-for="UpdateBooking.Mail" type="email" class="form-control input-square" placeholder="E-Posta">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateBooking.PersonCount">Kişi Sayısı</label>
+                                    <input asp-for="UpdateBooking.PersonCount" type="number" class="form-control input-square" placeholder="Kişi Sayısı">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateBooking.Date">Rezervasyon Tarihi</label>
+                                    <input asp-for="UpdateBooking.Date" type="datetime-local" class="form-control input-square">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="UpdateBooking.IsConfirmed">Rezervasyon Durumu</label>
+                                    <select asp-for="UpdateBooking.IsConfirmed" class="form-control input-square">
+                                        <option value=""> - </option>
+                                        <option value="true"> Onaylandı </option>
+                                        <option value="false"> İptal Edildi </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/booking" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Rezervasyonu Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,20 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+@await Component.InvokeAsync("_UserLayoutHeadComponentPartial")
+<body>
+    <div class="wrapper">
+        @await Component.InvokeAsync("_UserLayoutHeaderComponentPartial")
+        @await Component.InvokeAsync("_UserLayoutSidebarComponentPartial")
+        <div class="main-panel">
+            @RenderBody()
+            @await Component.InvokeAsync("_UserLayoutFooterComponentPartial")
+        </div>
+    </div>
+    @await Component.InvokeAsync("_UserLayoutScriptComponentPartial")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<form id="NewQRCodeGeneratorForm" asp-controller="QRCode" asp-action="Index">
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@ViewBag.MainTitle</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">QR Kod İşlemleri</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input type="text" name="value" />
+                                <input type="submit" value="QR Kod Oluştur" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if (ViewBag.QRCodeImage != null)
+                {
+                    <div class="col-md-6">
+                        <img src="@ViewBag.QRCodeImage" alt="QRCode" style="width: 400px; height:400px;" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</form>

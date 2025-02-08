@@ -1,0 +1,93 @@
+﻿@model RestaurantTableViewModel
+
+@{
+    ViewData["Title"] = "Masalar";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row">
+            @if (Model.ResultRestaurants != null)
+            {
+                @if (Model.ResultRestaurants.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Masa Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col" style="max-width: 400px; width: 400px;">Masa Adı</th>
+                                            <th scope="col">Kişi Sayısı</th>
+                                            <th scope="col">Masa QR Kod</th>
+                                            <th scope="col">Durum</th>
+                                            <th scope="col">Kullanım Durumu</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultRestaurants)
+                                        {
+                                            <tr>
+                                                <td>@item.RestaurantTableID</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.PersonCount</td>
+                                                <td>
+                                                    @if ((item.QRCodeForTable == null) || (item.QRCodeForTable == ""))
+                                                    {
+                                                        <div class="badge badge-warning">Bu masa için henüz bir QR kod oluşturulmadı!</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="@item.QRCodeForTable" class="btn btn-outline-dark"><i class="la la-qrcode"></i></a>
+                                                    }
+                                                </td>
+                                                @if (item.IsActive)
+                                                {
+                                                    <td><div class="badge badge-success">Aktif</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Pasif</div></td>
+                                                }
+                                                @if (!item.Status)
+                                                {
+                                                    <td><div class="badge badge-success">Boş</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Dolu</div></td>
+                                                }
+                                                <td>
+                                                    <a href="/admin/restauranttable/delete?id=@item.RestaurantTableID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/restauranttable/update/@item.RestaurantTableID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+                }
+                <a href="/admin/restauranttable/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Ürün Ekle</a>
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@(Model.HttpResponseMessage) !</div>
+            }
+        </div>
+    </div>
+</div>

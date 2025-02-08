@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+}
+
+@* @section Scripts { *@
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/feane-1.0.0/js/jquery-3.4.1.min.js"></script>
+
+<div class="container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <script type="text/javascript">
+
+                        $(document).ready(() => {
+                            var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7098/SignalRHub").build();
+
+                            connection.start()
+                                .then(() => {
+                                })
+                                .catch((err) => { console.error(err) });
+
+                            connection.on("ReceiveClientCount", (value) => {
+                                console.log("value: ", value);
+                            });
+                        });
+
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* } *@

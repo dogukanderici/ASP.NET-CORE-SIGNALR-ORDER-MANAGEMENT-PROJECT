@@ -1,0 +1,71 @@
+﻿@model BookingViewModel
+
+@{
+    ViewData["Title"] = "Rezervasyon Oluştur";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewBookingForm" asp-area="Admin" asp-controller="Booking" asp-action="CreateBooking" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Rezervasyon Oluşturma</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateBooking.Name">Müşteri Adı / Soyadı</label>
+                                    <input asp-for="CreateBooking.Name" type="text" class="form-control input-square" placeholder="Ad / Soyad">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateBooking.Phone">Telefon</label>
+                                    <input asp-for="CreateBooking.Phone" type="text" class="form-control input-square" placeholder="Telefon">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateBooking.Mail">E-Posta</label>
+                                    <input asp-for="CreateBooking.Mail" type="email" class="form-control input-square" placeholder="E-Posta">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateBooking.PersonCount">Kişi Sayısı</label>
+                                    <input asp-for="CreateBooking.PersonCount" type="number" class="form-control input-square" placeholder="Kişi Sayısı">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateBooking.Date">Rezervasyon Tarihi</label>
+                                    <input asp-for="CreateBooking.Date" type="datetime-local" class="form-control input-square">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/booking" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Rezervasyon Oluştur</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

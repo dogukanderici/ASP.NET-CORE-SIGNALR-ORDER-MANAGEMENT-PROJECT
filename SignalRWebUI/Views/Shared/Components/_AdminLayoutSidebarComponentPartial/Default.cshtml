@@ -1,0 +1,193 @@
+﻿<div class="sidebar">
+    <div class="scrollbar-inner sidebar-wrapper">
+        <div class="user">
+            <div class="photo" style="width: 40px; height: 35px;">
+                <img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile-image.png">
+            </div>
+            <div class="info">
+                <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                    <span>
+                        @ViewBag.NameSurname
+                        <span class="user-level">@ViewBag.UserName</span>
+                        <span class="caret"></span>
+                    </span>
+                </a>
+                <div class="clearfix"></div>
+
+                <div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+                    <ul class="nav">
+                        <li>
+                            <a href="/admin/profilesetting">
+                                <span class="link-collapse">Profilim</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/profilesetting/changepassword">
+                                <span class="link-collapse">Şifre Değiştir</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/profilesetting">
+                                <span class="link-collapse">Ayarlar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/default">
+                                <span class="link-collapse">Siteye Dön</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/logout">
+                                <span class="link-collapse">Çıkış Yap</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                @* <a href="">
+
+                <p>Admin Paneli</p>
+                </a> *@
+                <div class="user">
+                    <div class="info">
+                        <a class="" data-toggle="collapse" href="#adminSystemProcesses" aria-expanded="true">
+                            <span>Admin Paneli</span>
+                        </a>
+                        <div class="clearfix"></div>
+                        <div class="collapse in" id="adminSystemProcesses" aria-expanded="true" style="">
+                            <ul class="nav">
+                                <li>
+                                    <a href="/admin/role">
+                                        <span class="link-collapse">Sistem Rolleri</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/admin/user">
+                                        <span class="link-collapse">Kullanıcılar ve Rolleri</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/dashboard">
+                    <i class="la la-dashboard"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/progressbars">
+                    <i class="la la-money"></i>
+                    <p>Kasa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/message/getallmessages">
+                    <i class="la la-envelope-o"></i>
+                    <p>Mesajlarım</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/category">
+                    <i class="la la-align-justify"></i>
+                    <p>Kategoriler</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/product">
+                    <i class="la la-cutlery"></i>
+                    <p>Ürünler</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/dailydiscount">
+                    <i class="la la-bolt"></i>
+                    <p>Günlük İndirimler</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/discount">
+                    <i class="la la-try"></i>
+                    <p>İndirimler</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/feature">
+                    <i class="la la-bullhorn"></i>
+                    <p>Öne Çıkanlar</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/restauranttable">
+                    <i class="la la-tablet"></i>
+                    <p>Masalar</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/restauranttable/tablestatus">
+                    <i class="la la-clipboard"></i>
+                    <p>Masa Durumları</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/booking">
+                    <i class="la la-bell-o"></i>
+                    <p>Rezervasyonlar</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/mail">
+                    <i class="la la-anchor"></i>
+                    <p>Mail İşlemleri</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/testimonial">
+                    <i class="la la-comment"></i>
+                    <p>Yorumlar</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/about">
+                    <i class="la la-info-circle"></i>
+                    <p>Hakkımızda</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/contact">
+                    <i class="la la-phone"></i>
+                    <p>İletişim</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/socialmedia">
+                    <i class="la la-thumbs-o-up"></i>
+                    <p>Sosyal Medya Hesapları</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/workinghour">
+                    <i class="la la-hourglass-half"></i>
+                    <p>Çalışma Saatleri</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/helpdesk">
+                    <i class="la la-hourglass-half"></i>
+                    <p>Help Desk</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/default">
+                    <i class="la la-home"></i>
+                    <p>Siteye Dön</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

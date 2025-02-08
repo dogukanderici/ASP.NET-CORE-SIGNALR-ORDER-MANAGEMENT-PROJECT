@@ -1,0 +1,73 @@
+﻿@model CostManagementViewModel
+
+@{
+    ViewData["Title"] = "Aylık Gelir - Gider Geçmişi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            @if (Model.ResultMoneyCases != null)
+            {
+                @if (Model.ResultMoneyCases.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Gider Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">İşlem Tipi</th>
+                                            <th scope="col">İşlem Tarihi</th>
+                                            <th scope="col">İşlem Tutarı</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultMoneyCases)
+                                        {
+                                            <tr>
+                                                @if (item.OperationType == "income")
+                                                {
+
+                                                    <td style="border-left: 5px solid green !important;">
+                                                        <div class="d-flex justify-content-evenly align-items-center">
+                                                            <i class="la la-angle-up la-2x" style="color: green; font-weight: 700; padding-right: .5rem;"></i><span> Gelir</span>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+
+                                                    <td style="border-left: 5px solid red !important;">
+                                                        <div class="d-flex justify-content-evenly align-items-center">
+                                                            <i class="la la-angle-down la-2x" style="color: red; font-weight: 700; padding-right: .5rem;"></i><span> Gider</span>
+                                                        </div>
+                                                    </td>
+                                                }
+                                                <td>@item.OperationDate</td>
+                                                <td>@item.TotalAmount</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir Gideriniz Bulunmuyor!</div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

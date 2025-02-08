@@ -1,0 +1,67 @@
+﻿@using Newtonsoft.Json
+@model AboutViewModel
+
+@{
+    ViewData["Title"] = "Hakkımızda Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="UpdateAboutForm" asp-area="Admin" asp-controller="About" asp-action="UpdateAbout" method="post" enctype="multipart/form-data">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Hakkımızda Bilgisi Güncelleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @* <p class="alert alert-danger text-center">@Model.ApiResponseMessage</p> *@
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                @Html.HiddenFor(x => x.UpdateAbout.AboutID)
+                                @Html.HiddenFor(x => x.UpdateAbout.ImageUrl)
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateAbout.Title">Başlık</label>
+                                    <input asp-for="UpdateAbout.Title" type="text" class="form-control input-square" placeholder="Başlık">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateAbout.Image">Ürün Görseli <a href="~/asset/defaultimage/@Model.UpdateAbout.ImageUrl" target="_blank"><i class="la la-image"></i></a></label>
+                                    <input asp-for="UpdateAbout.Image" type="file" class="form-control input-square">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label asp-for="UpdateAbout.Description">Açıklama</label>
+                                    <textarea asp-for="UpdateAbout.Description" type="text" class="form-control input-square" rows="5" placeholder="Açıklama"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/about" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-save"></i> Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

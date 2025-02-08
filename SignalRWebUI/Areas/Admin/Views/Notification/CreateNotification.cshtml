@@ -1,0 +1,58 @@
+﻿@model NotificationViewModel
+
+@{
+    ViewData["Title"] = "Yeni Bildirim Oluşturma";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewNotificationForm" asp-area="Admin" asp-controller="Notification" asp-action="CreateNotification" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@ViewBag.MainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Bildirim Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateNotification.Type">Bildirim Türü</label>
+                                    <input asp-for="CreateNotification.Type" type="text" class="form-control input-square" placeholder="Bildirim Türü">
+                                </div>
+                                <div class=" col-md-6 form-group">
+                                    <label asp-for="CreateNotification.Description">Açıklama</label>
+                                    <input asp-for="CreateNotification.Description" type="text" class="form-control input-square" placeholder="Açıklama">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="/admin/category" class="btn btn-outline-danger">Vazgeç</a>
+                            <button type="submit" class="btn btn-success">Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

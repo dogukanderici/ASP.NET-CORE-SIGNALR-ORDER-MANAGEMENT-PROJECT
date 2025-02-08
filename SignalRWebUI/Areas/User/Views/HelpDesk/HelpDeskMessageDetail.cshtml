@@ -1,0 +1,97 @@
+﻿@model UserHelpDeskViewModel
+
+@{
+    ViewData["Title"] = "Help Desk Mesaj Detayı";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title">Help Desk Mesaj Detayı</div>
+                        <div class="card-title">Gönderim Tarihi: @Model.HelpDeskData.SendDate</div>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.HttpResponseMessage != 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="alert alert-danger">@Model.HttpResponseMessage</p>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-2 form-group">
+                                <a href="/user/helpdesk" class="form-control btn btn-outline-danger"><i class="la la-times"></i> Geri Dön</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label asp-for="HelpDeskData.NameSurname">Ad / Soyad</label>
+                                <input asp-for="HelpDeskData.NameSurname" type="text" class="form-control input-square" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label asp-for="HelpDeskData.Mail">E-Posta</label>
+                                <input asp-for="HelpDeskData.Mail" type="text" class="form-control input-square" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label asp-for="HelpDeskData.Phone">Telefon</label>
+                                <input asp-for="HelpDeskData.Phone" type="text" class="form-control input-square" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label asp-for="HelpDeskData.Subject">Konu</label>
+                                <input asp-for="HelpDeskData.Subject" type="text" class="form-control input-square" disabled>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label asp-for="HelpDeskData.MessageContent">İçerik</label>
+                                <textarea asp-for="HelpDeskData.MessageContent" rows="4" class="form-control input-square" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (Model.HelpDeskListData != null)
+            {
+                @if (Model.HelpDeskListData.Count() > 0)
+                {
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-title">Cevaplar</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Ad / Soyad</th>
+                                            <th scope="col">Tarih</th>
+                                            <th scope="col">Konu</th>
+                                            <th>İncele</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.HelpDeskListData)
+                                        {
+                                            <tr>
+                                                <td>@item.NameSurname</td>
+                                                <td>@item.SendDate</td>
+                                                <td>@item.Subject</td>
+                                                <td>
+                                                    <a href="/user/helpdesk/detail/@item.HelpDeskID" class="btn btn-outline-info"><i class="la la-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

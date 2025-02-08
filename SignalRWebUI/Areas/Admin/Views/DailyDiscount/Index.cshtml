@@ -1,0 +1,64 @@
+﻿@model DailyDiscountViewModel
+
+@{
+    ViewData["Title"] = "Günlük İndirimler";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row">
+            @if (Model.ResultDailyDiscounts != null)
+            {
+                @if (Model.ResultDailyDiscounts.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Günlük İndirim Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Başlık</th>
+                                            <th scope="col">Fiyat</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultDailyDiscounts)
+                                        {
+                                            <tr>
+                                                <td>@item.DailyDiscountID</td>
+                                                <td>@item.Title <a href="~/asset/defaultimage/@item.ImageUrl" target="_blank"><i class="la la-image"></i></a></td>
+                                                <td>@item.Amount</td>
+                                                <td>
+                                                    <a href="/admin/dailydiscount/delete?id=@item.DailyDiscountID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/dailydiscount/update/@item.DailyDiscountID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+                }
+                <a href="/admin/dailydiscount/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Günlük İndirim Ekle</a>
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">Bu Veriyi Görüntülemek İçin Yetkiniz Bulunmamaktadır!</div>
+            }
+        </div>
+    </div>
+</div>

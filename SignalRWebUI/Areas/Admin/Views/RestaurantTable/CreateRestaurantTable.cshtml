@@ -1,0 +1,62 @@
+﻿@model RestaurantTableViewModel
+
+@{
+    ViewData["Title"] = "Yeni Masa Ekleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string[] validationErrors = Model?.ApiResponseMessage?.Split(",");
+}
+
+<form id="AddNewRestaurantTableForm" asp-area="Admin" asp-controller="RestaurantTable" asp-action="CreateRestaurantTable" method="post">
+
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@mainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Yeni Masa Ekleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @foreach (var errorItem in validationErrors)
+                                            {
+                                                <span>@errorItem</span>
+                                                @if (errorItem != validationErrors.Last())
+                                                {
+                                                    <br />
+                                                }
+                                            }
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <div class="alert alert-warning text-center">Masaya Ait QR Kod Kaydet Butonuna Tıklandığında Masa Adından Oluşturulacaktır!</div>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="CreateRestaurantTable.Name">Masa Adı</label>
+                                    <input asp-for="CreateRestaurantTable.Name" type="text" class="form-control input-square" placeholder="Masa Adı">
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="CreateRestaurantTable.PersonCount">Kişi Sayısı</label>
+                                    <input asp-for="CreateRestaurantTable.PersonCount" type="number" min="2" max="4" class="form-control input-square" placeholder="Kişi Sayısı">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/admin/restauranttable" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                        <button type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

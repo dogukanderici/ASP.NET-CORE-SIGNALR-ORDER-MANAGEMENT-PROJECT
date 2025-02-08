@@ -1,0 +1,72 @@
+﻿@model FeatureViewModel
+
+@{
+    ViewData["Title"] = "Öne Çıkan Listesi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row">
+            @if (Model.ResultFeatures != null)
+            {
+                @if (Model.ResultFeatures.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Öne Çıkan Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Kategori Adı</th>
+                                            <th scope="col">Durumu</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultFeatures)
+                                        {
+                                            <tr>
+                                                <td>@item.FeatureID</td>
+                                                <td>@item.Title</td>
+                                                @if (item.Status)
+                                                {
+                                                    <td><div class="badge badge-success">Aktif</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Pasif</div></td>
+                                                }
+                                                <td>
+                                                    <a href="/admin/feature/delete?id=@item.FeatureID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/feature/update/@item.FeatureID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+                }
+
+                <a href="/admin/feature/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Öne Çıkan Ekle</a>
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">Bu Veriyi Görüntülemek İçin Yetkiniz Bulunmamaktadır!</div>
+            }
+        </div>
+    </div>
+</div>

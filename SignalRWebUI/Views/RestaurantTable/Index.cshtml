@@ -1,0 +1,154 @@
+﻿@model RestaurantTableViewModel
+
+@{
+    ViewData["Title"] = "Masalar";
+    Layout = null;
+    string tableStatusClass = "card-success";
+    string tableStatusMessage = "Boş";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .widget {
+            width: 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            border-radius: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .widget-table-success {
+            background-color: #2ECC71;
+        }
+
+        .widget-table-danger {
+            background-color: #EC2E4A;
+        }
+
+        .widget-table-passive {
+            background-color: #B0B0B0;
+        }
+
+        .widget-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+            .widget-icon i {
+                font-size: 24px;
+                color: #2ecc71;
+            }
+
+        .widget-text {
+            margin-left: 20px;
+        }
+
+            .widget-text h3 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+            .widget-text p {
+                margin: 0;
+                font-size: 14px;
+            }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+@await Component.InvokeAsync("_UILayoutHeadComponentPartial")
+
+<body class="sub_page">
+
+    @await Component.InvokeAsync("_UILayoutNavbarComponentPartial")
+    </div>
+
+    <section class="food_section layout_padding">
+        <div class="container">
+            <div class="heading_container heading_center mb-3">
+                <h2>
+                    Kullanıcı Seçimi Masaları
+                </h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center alert alert-danger">
+                    Lütfen Bulunduğunuz Masanın Adını Seçiniz!
+                </div>
+            </div>
+            <div class="row">
+                @if (Model.ResultRestaurants != null)
+                {
+                    @foreach (var item in Model.ResultRestaurants)
+                    {
+                        tableStatusClass = "widget-table-success";
+                        tableStatusMessage = "Boş";
+
+                        if (item.IsActive)
+                        {
+                            if (item.Status)
+                            {
+                                tableStatusClass = "widget-table-danger";
+                                tableStatusMessage = "Dolu";
+                            }
+                        }
+                        else
+                        {
+                            tableStatusClass = "widget-table-passive";
+                            tableStatusMessage = "Pasif";
+                        }
+                        <div class="col-md-3 mb-4">
+                            <div class="widget border rounded p-3 shadow @tableStatusClass">
+                                <div class="widget-icon text-center mb-2">
+                                    <i class="fa fa-cutlery fa-2x text-primary"></i>
+                                </div>
+                                <div class="widget-text text-center">
+                                    <h3>
+                                        @if (item.IsActive)
+                                        {
+                                            if (!item.Status)
+                                            {
+                                                <a href="/restauranttable/redirectdefaultwithtable?tablename=@item.Name" style="text-decoration: none; color: #FFF;">
+                                                    @item.Name
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                @item.Name
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @item.Name
+                                        }
+                                    </h3>
+                                    <p>@tableStatusMessage</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+                }
+            </div>
+        </div>
+    </section>
+
+    @await Component.InvokeAsync("_UILayoutFooterComponentPartial")
+
+    @await Component.InvokeAsync("_UILayoutScriptComponentPartial")
+
+</body>
+</html>

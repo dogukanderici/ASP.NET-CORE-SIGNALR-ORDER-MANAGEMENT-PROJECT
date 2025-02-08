@@ -1,0 +1,112 @@
+﻿@model UIFooterViewModel
+
+<footer class="footer_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 footer-col">
+                <div class="footer_contact">
+                    <h4>
+                        Bize Ulaşın
+                    </h4>
+                    @if (Model.HttpResponseMessageContact == null)
+                    {
+                        @foreach (var item in Model.Contacts)
+                        {
+                            <div class="contact_link_box">
+                                <a href="">
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    <span>
+                                        @item.Location
+                                    </span>
+                                </a>
+                                <a href="">
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                    <span>
+                                        @item.Phone
+                                    </span>
+                                </a>
+                                <a href="">
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    <span>
+                                        @item.Mail
+                                    </span>
+                                </a>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>@Model.HttpResponseMessageContact</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <div class="footer_detail">
+                    <a href="" class="footer-logo">
+                        D&D Restaurant
+                    </a>
+                    <p>
+                        Sosyal medya hesaplarımız üzerinden bize ulaşabilirsiniz.
+                    </p>
+                    <div class="footer_social">
+                        @if (Model.HttpResponseMessageSocialMedia == null)
+                        {
+                            @foreach (var item in Model.SocialMedias)
+                            {
+                                <a href="@item.Url">
+                                    <i class="fa fa-@item.Icon" aria-hidden="true"></i>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>@Model.HttpResponseMessageSocialMedia</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 footer-col">
+                <h4>
+                    Saatlerimiz
+                </h4>
+                @if (Model.HttpResponseMessageWorkingHour == null)
+                {
+
+                    @foreach (var item in Model.WorkingHours)
+                    {
+                        <p>
+                            @item.Title
+                        </p>
+                        <p>
+                            @item.OpeningHour - @item.ClosingHour
+                        </p>
+                    }
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>@Model.HttpResponseMessageWorkingHour</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>
+                &copy; <span id="displayYear"></span> Tüm Hakları Saklıdır. D&D Restaurant
+                <a href="https://html.design/">Free Html Templates</a><br><br>
+                &copy; <span id="displayYear"></span> Distributed By
+                <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+            </p>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model UserRoleDefinitionViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Rolü Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string username = (string)ViewBag.UserName;
+    string userid = (string)ViewBag.UserId;
+
+    List<IdentityRole> roleList = (List<IdentityRole>)ViewBag.RoleList;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@username Kullanıcısının Rolleri</h5>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Yeni Kullanıcı Rolü Ekleme</div>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.HttpResponseMessage != 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="alert alert-danger">@Model.HttpResponseMessage</p>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>Rol Adı</label>
+                                <select id="RoleName" for="RoleName" class="form-control">
+                                    <option value="">Rol Seçiniz</option>
+                                    @foreach (var item in roleList)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 card-action">
+                                <a href="/admin/user" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                                <button id="AddUserRoleBtn" onclick="SetNewRoleForUser()" type="submit" class="btn btn-success"><i class="la la-plus"></i> Kaydet</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (Model != null)
+            {
+                @if (Model.UserRoleData.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Rol Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <div id="product-table-ajax">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Rol Adı</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.UserRoleData)
+                                            {
+                                                <tr>
+                                                    <td>@item</td>
+                                                    <td>
+                                                        <a href="/admin/user/delete/@userid/@item" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kullanıcıya Kayıtlı Rol Bulunmuyor!</div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info w-100 text-center">Henüz Kullanıcıya Kayıtlı Rol Bulunmuyor!</div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function SetNewRoleForUser() {
+        console.log("Kullanıcı Id: ", '@ViewBag.UserId');
+
+        let userId = '@ViewBag.UserId';
+
+        const roleSelect = document.getElementById("RoleName");
+        let roleName = roleSelect.options[roleSelect.selectedIndex].text;
+
+        console.log("Rol Adı: ", roleSelect.options[roleSelect.selectedIndex].text);
+
+        window.location.href = `/admin/user/create/${userId}/${roleName}`;
+    }
+</script>

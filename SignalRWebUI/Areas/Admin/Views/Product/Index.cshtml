@@ -1,0 +1,361 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Ürünler";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row">
+            @if (Model.ResultProducts != null)
+            {
+                @if (Model.ResultProducts.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Ürün Listesi</div>
+                            </div>
+                            @* Paging *@
+                            <div class="d-flex justify-content-end align-items-center">
+                                <nav aria-label="Page navigation example" class="py-2">
+                                    <ul class="pagination">
+                                        <li class="page-item prevPage-item"><button id="prevPage" class="btn btn-outline-primary btn-sm">Önceki</button></li>
+                                        <li class="page-item"><button class="pageNumbers btn btn-outline-primary btn-sm active">1</button></li>
+                                        <li class="page-item nextPage-item"><button id="nextPage" class="btn btn-outline-primary btn-sm">Sonraki</button></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="card-body">
+                                <div id="product-table-ajax">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col" style="max-width: 400px; width: 400px;">Ürün Adı</th>
+                                                <th scope="col">Fiyat</th>
+                                                <th scope="col">Kategori</th>
+                                                <th scope="col">Durum</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.ResultProducts)
+                                            {
+                                                <tr>
+                                                    <td>@item.ProductID</td>
+                                                    <td>@item.ProductName <a href="~/asset/defaultimage/@item.ImageUrl" target="_blank"><i class="la la-image"></i></a></td>
+                                                    <td>@item.Price</td>
+                                                    <td>@item.Category.CategoryName</td>
+                                                    @if (item.ProductStatus)
+                                                    {
+                                                        <td><div class="badge badge-success">Aktif</div></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><div class="badge badge-danger">Pasif</div></td>
+                                                    }
+                                                    <td>
+                                                        <a href="/admin/product/delete?id=@item.ProductID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                        <a href="/admin/product/update/@item.ProductID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">Bu Veriyi Görüntülemek İçin Yetkiniz Bulunmamaktadır!</div>
+            }
+
+            <a href="/admin/product/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Ürün Ekle</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let currentPage = 1;
+        let pageSize = parseInt(@ViewBag.PageSize);
+        let lastPage = Math.round(parseInt(@ViewBag.DataCount) / pageSize);
+
+        console.log("lastPage: ", lastPage);
+
+        // Sayfalandırma Yeniden Yapılandırılır.
+        document.querySelectorAll(".pageNumbers").forEach(button => {
+            $(button).remove();
+        });
+
+        for (let i = 1; i <= lastPage; i++) {
+
+            const pagingButton = document.createElement("button");
+            $(pagingButton).addClass("pageNumbers");
+            $(pagingButton).addClass("btn");
+            $(pagingButton).addClass("btn-outline-primary");
+            $(pagingButton).addClass("btn-sm");
+
+            if (i == currentPage) {
+                $(pagingButton).addClass("active");
+            }
+
+            if ((lastPage > 4) && (i == lastPage - 2)) {
+                $(pagingButton).addClass("current-page");
+            }
+
+            if ((lastPage > 4) && (i == lastPage - 1)) {
+
+                $(pagingButton).text("...");
+                $(pagingButton).addClass("ellipsis-button");
+                $(pagingButton).prop("disabled", true);
+            }
+            else {
+                $(pagingButton).text(i);
+            }
+
+            document.querySelector(".prevPage-item").appendChild(pagingButton);
+        }
+
+        if (currentPage == 1) {
+
+            $("#prevPage").prop("disabled", true);
+
+            $("#prevPage").removeClass("btn-outline-primary");
+            $("#prevPage").addClass("btn-outline-secondary");
+        }
+
+
+
+        // Önceki Sayfa Butonuna Tıklanması Halinde Çalışacak.
+        document.querySelector("#prevPage").addEventListener("click", function () {
+            currentPage != 1 ? (currentPage = currentPage - 1) : (currentPage = 1);
+
+            if (currentPage == 1) {
+
+                $("#prevPage").prop("disabled", true);
+
+                $("#prevPage").removeClass("btn-outline-primary");
+                $("#prevPage").addClass("btn-outline-secondary");
+            }
+
+            document.querySelectorAll(".pageNumbers").forEach(function (e) {
+                if ($(e).text() == currentPage) {
+                    $(e).addClass("active");
+
+                    $(e).trigger("click");
+                }
+                else {
+
+                    $(e).removeClass("active");
+                }
+            });
+
+            let activeBtnCount = 0;
+            document.querySelectorAll(".pageNumbers").forEach(function (e) {
+                if ($(e).hasClass("active")) {
+                    activeBtnCount++;
+                }
+            });
+
+            if (activeBtnCount < 1) {
+                $(".current-page").text(currentPage);
+                $(".current-page").addClass("active");
+                $(".current-page").trigger("click");
+            }
+        });
+
+        // Sonraki Sayfa Butonuna Tıklanması Halinde Çalışacak.
+        document.querySelector("#nextPage").addEventListener("click", function () {
+
+            currentPage != lastPage ? (currentPage = currentPage + 1) : (currentPage = lastPage);
+
+            console.log("nextPage-currentPage: ", currentPage);
+
+            if (currentPage == lastPage) {
+
+                $("#nextPage").prop("disabled", true);
+
+                $("#nextPage").removeClass("btn-outline-primary");
+                $("#nextPage").addClass("btn-outline-secondary");
+            }
+
+            document.querySelectorAll(".pageNumbers").forEach(function (e, index) {
+
+                if ($(e).text() == currentPage) {
+                    $(e).addClass("active");
+
+                    $(e).trigger("click");
+                }
+                else {
+                    $(e).removeClass("active");
+                }
+            });
+
+            let activeBtnCount = 0;
+            document.querySelectorAll(".pageNumbers").forEach(function (e) {
+                if ($(e).hasClass("active")) {
+                    activeBtnCount++;
+                }
+            });
+
+            if (activeBtnCount < 1) {
+                $(".current-page").text(currentPage);
+                $(".current-page").addClass("active");
+                $(".current-page").trigger("click");
+            }
+
+        });
+
+        // Dinamik Sayfa Numaralarına Tıklanması Halinde Çalışacak.
+        document.querySelectorAll(".pageNumbers").forEach(button => {
+            button.addEventListener("click", function () {
+                currentPage = parseInt(this.innerText);
+                console.log("currentPage: ", currentPage);
+
+                if (!$(this).hasClass("current-page")) {
+                    currentPage = parseInt(this.innerText);
+                }
+                else {
+                    currentPage = parseInt($(".current-page").text());
+                }
+
+                // Css Düzenlemeleri
+                if (currentPage == 1) {
+
+                    $("#prevPage").prop("disabled", true);
+
+                    $("#prevPage").removeClass("btn-outline-primary");
+                    $("#prevPage").addClass("btn-outline-secondary");
+                }
+
+                else {
+                    $("#prevPage").prop("disabled", false);
+
+                    if ($("#prevPage").hasClass("btn-outline-secondary")) {
+                        $("#prevPage").removeClass("btn-outline-secondary");
+                        $("#prevPage").addClass("btn-outline-primary");
+                    }
+                }
+
+                if (currentPage == lastPage) {
+
+                    $("#nextPage").prop("disabled", true);
+
+                    $("#nextPage").removeClass("btn-outline-primary");
+                    $("#nextPage").addClass("btn-outline-secondary");
+                }
+
+                else {
+                    $("#nextPage").prop("disabled", false);
+
+                    if ($("#nextPage").hasClass("btn-outline-secondary")) {
+                        $("#nextPage").removeClass("btn-outline-secondary");
+                        $("#nextPage").addClass("btn-outline-primary");
+                    }
+                }
+
+                $("button.pageNumbers").filter(function () {
+                    if ($(this).text() === currentPage.toString()) {
+                        $(this).addClass("active");
+                    }
+                    else {
+
+                        $(this).removeClass("active");
+                    }
+                });
+
+                if (lastPage > 3) {
+                    if ($(".current-page").text() != "3") {
+                        const pageBtns = document.querySelectorAll(".pageNumbers");
+                        pageBtns[1].insertAdjacentElement("afterend", document.querySelector(".ellipsis-button"))
+                    }
+                    else {
+
+                        const pageBtns = document.querySelectorAll(".pageNumbers");
+                        pageBtns[pageBtns.length - 1].insertAdjacentElement("beforebegin", document.querySelector(".ellipsis-button"));
+                    }
+                }
+
+                // Ajax ile Veri Sorgusu İle Veriler Getirilir.
+                console.log("Current Page Value for Ajax Process: ", currentPage);
+                executeAjaxProcess(currentPage, pageSize);
+            });
+        });
+
+        function createTableForAjax(data) {
+            var tableString = '<div id="product-table-ajax"><table class="table table-hover">' +
+                '<thead>' +
+                '<tr>' +
+                '<th scope="col">#</th>' +
+                '<th scope="col" style="max-width: 400px; width: 400px;">Ürün Adı</th>' +
+                '<th scope="col">Fiyat</th>' +
+                '<th scope="col">Kategori</th>' +
+                '<th scope="col">Durum</th>' +
+                '<th></th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>';
+
+            data.forEach(function (item) {
+                tableString += '<tr>' +
+                    '<td>' + item.productID + '</td>' +
+                    '<td>' + item.productName + '<a href="~/asset/defaultimage/' + item.imageUrl + '" target="_blank"><i class="la la-image"></i></a></td>' +
+                    '<td>' + item.price + '</td>' +
+                    '<td>' + item.category.categoryName + '</td>';
+
+                if (item.productStatus) {
+                    tableString += '<td> <div class="badge badge-success">Aktif</div></td>';
+                }
+                else {
+                    tableString += '<td><div class="badge badge-danger">Pasif</div></td>';
+                }
+
+                tableString += '<td>' +
+                    '<a href="/admin/product/delete?id=' + item.productID + '" class="btn btn-outline-danger"><i class="la la-trash"></i></a>' +
+                    '<a href="/admin/product/update/' + item.productID + '" class="btn btn-outline-info"><i class="la la-edit"></i></a>' +
+                    '</td>' +
+                    '</tr>';
+            });
+
+            tableString += '</tbody ></table></div>';
+
+            return tableString;
+        }
+
+        function executeAjaxProcess(pageNumber, pageSize) {
+
+            $.ajax({
+                type: "GET",
+                url: `/Admin/Product/ProductWithCategoriesByPaging/${pageNumber}/${pageSize}`,
+                contentType: "application/json",
+                success: function (successResponse) {
+                    console.log("successResponse: ", successResponse.resultProducts);
+
+                    // Tablo gelen veriye göre tekrar oluşturulur.
+                    var tableHtmlString = createTableForAjax(successResponse.resultProducts);
+
+                    $("#product-table-ajax").remove();
+                    $(".card-body").append($(tableHtmlString));
+
+                },
+                error: function (errorResponse) {
+                    console.error("HATA: ", errorResponse);
+                }
+            });
+        }
+    </script>
+}

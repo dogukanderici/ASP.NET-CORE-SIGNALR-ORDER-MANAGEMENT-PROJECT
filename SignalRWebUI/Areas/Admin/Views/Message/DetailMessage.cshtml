@@ -1,0 +1,54 @@
+﻿@model MessageViewModel
+
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title">Yeni Mesaj</div>
+                        <div class="card-title">Gönderim Tarihi: @Model.MessageData.SendDate</div>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.HttpResponseMessage != 0)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="alert alert-danger">@Model.HttpResponseMessage</p>
+                                </div>
+                            </div>
+                        }
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label asp-for="MessageData.SenderMail">Gönderen</label>
+                                <input asp-for="MessageData.SenderMail" type="email" class="form-control input-square" placeholder="Gönderen" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label asp-for="MessageData.ReceiverMail">Alıcı</label>
+                                <input asp-for="MessageData.ReceiverMail" type="email" class="form-control input-square" placeholder="Alıcı" disabled>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label asp-for="MessageData.MessageSubject">Konu</label>
+                                <input asp-for="MessageData.MessageSubject" type="text" class="form-control input-square" placeholder="Konu" disabled>
+                            </div>
+                            <div class="col-md-12 form-group">
+                                <label asp-for="MessageData.MessageContent">İçerik</label>
+                                <textarea asp-for="MessageData.MessageContent" type="text" class="form-control input-square" rows="5" placeholder="İçerik" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <a href="/admin/message/getallmessages" class="btn btn-outline-danger"><i class="la la-times"></i> Vazgeç</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

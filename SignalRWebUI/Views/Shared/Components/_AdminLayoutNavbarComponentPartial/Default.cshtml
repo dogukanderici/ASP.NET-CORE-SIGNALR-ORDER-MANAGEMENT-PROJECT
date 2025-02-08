@@ -1,0 +1,140 @@
+﻿@{
+    int notificationCount = 0;
+    string apiBaseUrl = ViewBag.ApiBaseUrl;
+    string userAccessToken = ViewBag.UserAccessToken;
+}
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/Ready-Bootstrap-Dashboard-master/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<div class="container" style="display: none !important;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <script type="text/javascript">
+
+                        $(document).ready(() => {
+                            var connection = new signalR.HubConnectionBuilder().withUrl("@(apiBaseUrl.ToString())", {
+                                accessTokenFactory: () => "@userAccessToken"
+                            })
+                                .build();
+
+                            $("#connStatus").text(connection.state);
+
+                            connection.start()
+                                .then(() => {
+                                    $("#connStatus").text(connection.state);
+                                    setInterval(() => {
+                                        connection.invoke("SendNotification");
+                                    }, 5000);
+                                })
+                                .catch((err) => { console.error(err) });
+
+
+                            connection.on("ReceiveUnreadNotificationCount", (value) => {
+                                notificationCount = value;
+                                $("#unreadNotificationCount").text(value);
+                                $("#unreadNotificationCountMessage").text(`${value} yeni bildirim`);
+                            });
+
+                            connection.on("ReceiveUnreadNotifications", (value) => {
+                                console.log("ReceiveUnreadNotifications: ", value);
+
+                                let htmlString = '';
+
+                                if (value.length < 1) {
+                                    htmlString = '<a href="#">' +
+                                        '<div class="notif-icon notif-primary"><i class="la la-bell-slash"></i></div>' +
+                                        '<div class="notif-content">' +
+                                        '<span class="block">Okunmamış Bildirim Yok</span>' +
+                                        '<span class="time"></span>' +
+                                        '</div>' +
+                                        '</a>';
+                                }
+                                else {
+                                    $.each(value, (index, item) => {
+
+                                        let description = item.description.substring(0, 20);
+                                        htmlString += '<a href="/admin/notification/updatestatus/' + item.notificationID + '/true">' +
+                                            '<div class="notif-icon notif-primary"><i class="la la-bell"></i></div>' +
+                                            '<div class="notif-content">' +
+                                            '<span class="block">' +
+                                            description +
+                                            '</span>' +
+                                            '<span class="time">' +
+                                            new Date(item.date).toLocaleDateString("tr-TR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }) +
+                                            '</span>' +
+                                            ' </div>' +
+                                            '</a>';
+                                    });
+                                }
+
+                                $("#unreadNotification").html(htmlString);
+                            });
+                        });
+
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-header navbar-expand-lg">
+    <div class="container-fluid">
+        <form class="navbar-left navbar-form nav-search mr-md-3" action="">
+            <div class="input-group">
+                <input type="text" placeholder="Ara ..." class="form-control">
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-search search-icon"></i>
+                    </span>
+                </div>
+            </div>
+        </form>
+        <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+            <li class="nav-item dropdown hidden-caret">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="la la-bell"></i>
+                    <span id="unreadNotificationCount" class="notification">0</span>
+                </a>
+                <ul class="dropdown-menu notif-box" aria-labelledby="navbarDropdown">
+                    <li>
+                        <div id="unreadNotificationCountMessage" class="dropdown-title"></div>
+                    </li>
+                    <li>
+                        <div id="unreadNotification" class="notif-center">
+                        </div>
+                    </li>
+                    <li>
+                        <a class="see-all" href="javascript:void(0);"> <strong>Tümünü Oku</strong> <i class="la la-angle-right"></i> </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile-image.png" alt="user-img" width="36" class="img-circle"><span>@ViewBag.NameSurname</span></span> </a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li>
+                        <div class="user-box">
+                            <div class="u-img"><img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile-image.png" alt="user"></div>
+                            <div class="u-text">
+                                <h4>@ViewBag.NameSurname</h4>
+                                <p class="text-muted">@ViewBag.UserName</p><a href="/admin/profilesetting" class="btn btn-rounded btn-danger btn-sm">Profili Görüntüle</a>
+                            </div>
+                        </div>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/admin/profilesetting"><i class="ti-user"></i> Profilim</a>
+                    <a class="dropdown-item" href="/admin/profilesetting"><i class="ti-settings"></i> Hesap Ayarları</a>
+                    <a class="dropdown-item" href="/admin/profilesetting/changepassword"><i class="ti-settings"></i> Şifre Değiştir</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/admin/dashboard"><i class="ti-settings"></i> Dashboard</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/Logout"><i class="fa fa-power-off"></i> Çıkış Yap</a>
+                </ul>
+                <!-- /.dropdown-user -->
+            </li>
+        </ul>
+    </div>
+</nav>

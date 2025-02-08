@@ -1,0 +1,61 @@
+﻿@model CostManagementViewModel
+
+@{
+    ViewData["Title"] = "Aylık Gider Listesi";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            @if (Model.ResultMoneyCases != null)
+            {
+                @if (Model.ResultMoneyCases.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Gider Listesi</div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Gider Tarihi</th>
+                                            <th scope="col">Gider Tutarı</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ResultMoneyCases)
+                                        {
+                                            <tr>
+                                                <td>@item.OperationDate</td>
+                                                <td>@item.TotalAmount</td>
+                                                <td>
+                                                    <a href="/admin/costmanagement/delete?id=@item.MoneyCaseID" class="btn btn-outline-danger"><i class="la la-trash"></i></a>
+                                                    <a href="/admin/costmanagement/update/@item.MoneyCaseID" class="btn btn-outline-info"><i class="la la-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir Gideriniz Bulunmuyor!</div>
+                }
+
+                <a href="/admin/costmanagement/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Gider Ekle</a>
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿@model CostManagementViewModel
+
+@{
+    ViewData["Title"] = "Gider Güncelleme";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+}
+
+
+<form id="UpdateCostForm" asp-area="Admin" asp-controller="CostManagement" asp-action="UpdateCost" method="post">
+    <div class="content">
+        <div class="container-fluid">
+            <h5>@ViewBag.MainTitle</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Gider Güncelleme</div>
+                        </div>
+                        <div class="card-body">
+                            @if (Model.HttpResponseMessage != 0)
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="alert alert-danger text-center">
+                                            @Model.ApiResponseMessage
+                                        </p>
+                                    </div>
+                                </div>
+                            }<div class="row">
+                                @Html.HiddenFor(x => x.UpdateMoneyCase.MoneyCaseID)
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateMoneyCase.OperationDate">Gider Tarihi</label>
+                                    <input asp-for="UpdateMoneyCase.OperationDate" type="datetime-local" class="form-control input-square" placeholder="Gider Tarihi">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="UpdateMoneyCase.TotalAmount">Gider Tutarı</label>
+                                    <input asp-for="UpdateMoneyCase.TotalAmount" type="number" min="1" class="form-control input-square" placeholder="Gider Tutarı">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <a href="/admin/costmanagement" class="btn btn-outline-danger">Vazgeç</a>
+                            <button type="submit" class="btn btn-success">Kaydet</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

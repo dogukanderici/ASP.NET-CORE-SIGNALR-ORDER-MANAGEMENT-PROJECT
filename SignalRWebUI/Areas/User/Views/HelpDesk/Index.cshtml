@@ -1,0 +1,77 @@
+﻿@model UserHelpDeskViewModel
+
+@{
+    ViewData["Title"] = "Help Desk Mesajlarım";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+}
+
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@ViewBag.MainTitle</h5>
+        <div class="row">
+            @if (Model.HelpDeskListData != null)
+            {
+                @if (Model.HelpDeskListData.Count() > 0)
+                {
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-title">Help Desk Mesajlarım</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2 form-group">
+                                        <a href="/user/helpdesk/create" class="form-control btn btn-info"><i class="la la-plus"></i> Yeni Mesaj Oluştur</a>
+                                    </div>
+                                </div>
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Ad / Soyad</th>
+                                            <th scope="col">E-Posta</th>
+                                            <th scope="col">Telefon</th>
+                                            <th scope="col">Konu</th>
+                                            <th scope="col">Durum</th>
+                                            <th>İncele</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.HelpDeskListData)
+                                        {
+                                            <tr>
+                                                <td>@item.NameSurname</td>
+                                                <td>@item.Mail</td>
+                                                <td>@item.Phone</td>
+                                                <td>@item.Subject</td>
+                                                @if (item.IsRead)
+                                                {
+                                                    <td><div class="badge badge-success">Okundu</div></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><div class="badge badge-danger">Okunmadı</div></td>
+                                                }
+                                                <td>
+                                                    <a href="/user/helpdesk/detail/@item.HelpDeskID" class="btn btn-outline-info"><i class="la la-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir Help Desk Mesajınız Bulunmuyor!</div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-danger w-100 text-center">@Model.HttpResponseMessage !</div>
+            }
+        </div>
+    </div>
+</div>

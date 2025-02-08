@@ -1,0 +1,526 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/AdminLayout/Index.cshtml";
+    string apiBaseUrl = ViewBag.ApiBaseUrl;
+    string userAccessToken = ViewBag.UserAccessToken;
+    bool checkRequestSendAuthorize = false;
+}
+
+@section Scripts {
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <script type="text/javascript">
+
+                            $(document).ready(() => {
+                                let checkRequestSendAuthorize = false;
+                                let checkRequestSendAuthorizeMessage = '';
+
+                                const statusCodeMessages = {
+                                    "100": "Continue",
+                                    "101": "Switching Protocols",
+                                    "102": "Processing",
+                                    "200": "OK",
+                                    "201": "Created",
+                                    "202": "Accepted",
+                                    "203": "Non-Authoritative Information",
+                                    "204": "No Content",
+                                    "205": "Reset Content",
+                                    "206": "Partial Content",
+                                    "207": "Multi-Status",
+                                    "208": "Already Reported",
+                                    "226": "IM Used",
+                                    "300": "Multiple Choices",
+                                    "301": "Moved Permanently",
+                                    "302": "Found",
+                                    "303": "See Other",
+                                    "304": "Not Modified",
+                                    "305": "Use Proxy",
+                                    "307": "Temporary Redirect",
+                                    "308": "Permanent Redirect",
+                                    "400": "Bad Request",
+                                    "401": "Unauthorized",
+                                    "402": "Payment Required",
+                                    "403": "Forbidden",
+                                    "404": "Not Found",
+                                    "405": "Method Not Allowed",
+                                    "406": "Not Acceptable",
+                                    "407": "Proxy Authentication Required",
+                                    "408": "Request Timeout",
+                                    "409": "Conflict",
+                                    "410": "Gone",
+                                    "411": "Length Required",
+                                    "412": "Precondition Failed",
+                                    "413": "Payload Too Large",
+                                    "414": "URI Too Long",
+                                    "415": "Unsupported Media Type",
+                                    "416": "Range Not Satisfiable",
+                                    "417": "Expectation Failed",
+                                    "418": "I'm a teapot",
+                                    "421": "Misdirected Request",
+                                    "422": "Unprocessable Entity",
+                                    "423": "Locked",
+                                    "424": "Failed Dependency",
+                                    "425": "Too Early",
+                                    "426": "Upgrade Required",
+                                    "428": "Precondition Required",
+                                    "429": "Too Many Requests",
+                                    "431": "Request Header Fields Too Large",
+                                    "451": "Unavailable For Legal Reasons",
+                                    "500": "Internal Server Error",
+                                    "501": "Not Implemented",
+                                    "502": "Bad Gateway",
+                                    "503": "Service Unavailable",
+                                    "504": "Gateway Timeout",
+                                    "505": "HTTP Version Not Supported",
+                                    "506": "Variant Also Negotiates",
+                                    "507": "Insufficient Storage",
+                                    "508": "Loop Detected",
+                                    "510": "Not Extended",
+                                    "511": "Network Authentication Required"
+                                };
+
+                                var connection = new signalR.HubConnectionBuilder().withUrl("@(apiBaseUrl.ToString())", {
+                                    accessTokenFactory: () => "@userAccessToken"
+                                })
+                                    .build();
+
+                                console.log("Connection Info: ", connection);
+                                console.log("connStatus: ", connection.state);
+                                $("#connStatus").text(connection.state);
+
+                                connection.start()
+                                    .then(() => {
+
+                                        console.log("connStatus: ", connection.state);
+                                        $("#connStatus").text(connection.state);
+
+                                        setInterval(() => {
+                                            connection.invoke("SendStatistics")
+                                                .then((result) => {
+                                                    checkRequestSendAuthorize = true;
+                                                })
+                                                .catch((err) => {
+                                                    console.log("A Error Occured While Sending Request. Error: ", err);
+                                                    checkRequestSendAuthorize = false;
+                                                    checkRequestSendAuthorizeMessage = err.statusCode;
+
+                                                    $("#categoryCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#productCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#activeCategoryCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#moneyCaseIncome").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#moneyCaseOutcome").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#moneyCaseTotal").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#averageProductPrice").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#maxPriceProduct").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#minPriceProduct").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#totalOrderCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#activeOrderCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#completedOrderCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#canceledOrderCount").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#lastOrderPrice").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                    $("#dailyTotalOrderPrice").text(checkRequestSendAuthorizeMessage + ' - ' + statusCodeMessages[checkRequestSendAuthorizeMessage]);
+                                                })
+                                        }, 1000);
+                                    })
+                                    .catch((err) => {
+                                        if (err.statusCode != 200) {
+                                            alert("Bu Sayfayı Görüntüleyebilmek İçin Tekrar Giriş Yapmanız Gerekmektedir. Kullanıcı Girişi Sayfasına Yönlendiriliyorsunuz! Error:" + err.statusCode);
+                                            window.location.href = "/Login";
+                                        }
+                                    });
+
+                                connection.on("ReceiveCategoryCount", (value) => {
+                                    $("#categoryCount").text(value);
+                                });
+
+                                connection.on("ReceiveProductCount", (value) => {
+                                    $("#productCount").text(value);
+                                });
+
+                                connection.on("ReceiveActiveCategoryCount", (value) => {
+                                    $("#activeCategoryCount").text(value);
+                                });
+
+                                connection.on("ReceiveIncomeMoneyCase", (value) => {
+                                    $("#moneyCaseIncome").text(value);
+                                });
+
+                                connection.on("ReceiveOutcomeMoneyCase", (value) => {
+                                    $("#moneyCaseOutcome").text(value);
+                                });
+
+                                connection.on("ReceiveTotalMoneyCase", (value) => {
+                                    $("#moneyCaseTotal").text(value);
+                                });
+
+                                connection.on("ReceiveAverageProductPrice", (value) => {
+                                    $("#averageProductPrice").text(value);
+                                });
+
+                                connection.on("ReceiveMaxProductPrice", (value) => {
+                                    $("#maxPriceProduct").text(value);
+                                });
+
+                                connection.on("ReceiveMinProductPrice", (value) => {
+                                    $("#minPriceProduct").text(value);
+                                });
+
+                                connection.on("ReceiveTotalOrderCount", (value) => {
+                                    $("#totalOrderCount").text(value);
+                                });
+
+                                connection.on("ReceiveTotalOrderCount", (value) => {
+                                    $("#total_OrderCount").text(value);
+                                });
+
+                                connection.on("ReceiveActiveOrderCount", (value) => {
+                                    $("#activeOrderCount").text(value);
+                                });
+
+                                connection.on("ReceiveCompletedOrderCount", (value) => {
+                                    $("#completedOrderCount").text(value);
+                                });
+
+                                connection.on("ReceiveCanceledOrderCount", (value) => {
+                                    $("#canceledOrderCount").text(value);
+                                });
+
+                                connection.on("ReceiveLastOrderPrice", (value) => {
+                                    $("#lastOrderPrice").text(value);
+                                });
+
+                                connection.on("ReceiveTodayTotalOrderPrice", (value) => {
+                                    $("#dailyTotalOrderPrice").text(value);
+                                });
+                            });
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-stats card-warning">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-users"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Kategori Sayısı</p>
+                                    <h4 class="card-title" id="categoryCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-success">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-bar-chart"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Ürün Sayısı</p>
+                                    <h4 class="card-title" id="productCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-danger">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-newspaper-o"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Aktif Kategori</p>
+                                    <h4 class="card-title" id="activeCategoryCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-primary">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Sipariş</p>
+                                    <h4 class="card-title" id="totalOrderCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-stats card-warning">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-users"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Gelir (₺)</p>
+                                    <h4 class="card-title" id="moneyCaseIncome"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-success">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-bar-chart"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Gider (₺)</p>
+                                    <h4 class="card-title" id="moneyCaseOutcome"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-danger">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-newspaper-o"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Toplam (₺)</p>
+                                    <h4 class="card-title" id="moneyCaseTotal"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-primary">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Son Sipariş Tutarı</p>
+                                    <h4 class="card-title" id="lastOrderPrice"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-stats card-warning">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-users"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Ortalama Ürün Fiyatı</p>
+                                    <h4 class="card-title" id="averageProductPrice"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-success">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-bar-chart"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">En Pahalı Ürün</p>
+                                    <h4 class="card-title" id="maxPriceProduct"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-danger">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-newspaper-o"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">En Ucuz Ürün</p>
+                                    <h4 class="card-title" id="minPriceProduct"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-primary">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers ellipsisCustom" title="Günlük Toplam Sipariş (₺)">
+                                    <p class="card-category">Günlük Sipariş (₺)</p>
+                                    <h4 class="card-title" id="dailyTotalOrderPrice"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-stats card-warning">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-users"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Toplam Sipariş</p>
+                                    <h4 class="card-title" id="total_OrderCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-success">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-bar-chart"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category">Aktif Siparişler</p>
+                                    <h4 class="card-title" id="activeOrderCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-danger">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-newspaper-o"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers ellipsisCustom" title="Tamamlanmış Siparişler">
+                                    <p class="card-category">Tamamlanmış Siparişler</p>
+                                    <h4 class="card-title" id="completedOrderCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-stats card-primary">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="icon-big text-center">
+                                    <i class="la la-check-circle"></i>
+                                </div>
+                            </div>
+                            <div class="col-8 d-flex align-items-center">
+                                <div class="numbers ellipsisCustom" title="İptal Edilmiş Siparişler">
+                                    <p class="card-category">İptal Edilmiş Siparişler</p>
+                                    <h4 class="card-title" id="canceledOrderCount"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

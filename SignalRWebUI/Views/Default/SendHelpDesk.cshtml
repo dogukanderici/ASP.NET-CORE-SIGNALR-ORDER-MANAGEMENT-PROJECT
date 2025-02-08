@@ -1,0 +1,44 @@
+﻿@model CreateAdminHelpDeskDto
+
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+                Bize Ulaşın
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form id="AddNewHelpDeskForm" asp-controller="Default" asp-action="SendHelpDesk">
+                        <div>
+                            <input asp-for="NameSurname" type="text" class="form-control" placeholder="Adınız / Soyadınız" />
+                        </div>
+                        <div>
+                            <input asp-for="Phone" type="text" class="form-control" placeholder="Telefon Numaranız" />
+                        </div>
+                        <div>
+                            <input asp-for="Mail" type="email" class="form-control" placeholder="E-Posta Adresiniz" />
+                        </div>
+                        <div>
+                            <input asp-for="Subject" type="text" class="form-control" placeholder="Konu" />
+                        </div>
+                        <div>
+                            <textarea asp-for="MessageContent" class="form-control" rows="4" placeholder="Mesajınız"></textarea>
+                        </div>
+                        <div class="btn_box">
+                            <button>
+                                Mesajınızı Gönderin
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="map_container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1115.823058220985!2d30.510567314227686!3d39.780555743789634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cc15378f78e799%3A0xa6a5b551336d6336!2sUlus%20meydan%C4%B1!5e0!3m2!1str!2str!4v1737060720860!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

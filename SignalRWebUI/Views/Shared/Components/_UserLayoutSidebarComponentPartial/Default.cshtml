@@ -1,0 +1,77 @@
+﻿<div class="sidebar">
+    <div class="scrollbar-inner sidebar-wrapper">
+        <div class="user">
+            <div class="photo">
+                <img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile-image.png">
+            </div>
+            <div class="info">
+                <a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                    <span>
+                        @ViewBag.NameSurname
+                        <span class="user-level">@ViewBag.UserName</span>
+                        <span class="caret"></span>
+                    </span>
+                </a>
+                <div class="clearfix"></div>
+
+                <div class="collapse in" id="collapseExample" aria-expanded="true" style="">
+                    <ul class="nav">
+                        <li>
+                            <a href="/user/profilesetting">
+                                <span class="link-collapse">Profilim</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/profilesetting/changepassword">
+                                <span class="link-collapse">Şifre Değiştir</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/logout">
+                                <span class="link-collapse">Çıkış Yap</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a href="#">
+                    
+                    <p>Kullanıcı Paneli</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/message/getallmessages">
+                    <i class="la la-envelope-o"></i>
+                    <p>Mesajlarım</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/helpdesk">
+                    <i class="la la-envelope-o"></i>
+                    <p>Help Desk Mesajlarım</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/booking">
+                    <i class="la la-comment"></i>
+                    <p>Rezervasyonlarım</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/testimonial">
+                    <i class="la la-comment"></i>
+                    <p>Yorumlarım</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/default">
+                    <i class="la la-home"></i>
+                    <p>Siteye Dön</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

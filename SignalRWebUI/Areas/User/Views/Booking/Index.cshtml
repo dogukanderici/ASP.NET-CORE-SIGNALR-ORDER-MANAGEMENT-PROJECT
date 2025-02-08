@@ -1,0 +1,83 @@
+﻿@model UserBookingViewModel
+
+@{
+    ViewData["Title"] = "Rezervasyonlarım";
+    Layout = "~/Views/UserLayout/Index.cshtml";
+    string mainTitle = (string)ViewBag.MainTitle;
+    string emptyDataInfo = (string)ViewBag.EmptyDataInfo;
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h5>@mainTitle</h5>
+        <div class="row mb-2">
+            <div class="card-action">
+                <a href="/user/booking/create" class="btn btn-success"><i class="la la-plus"></i> Yeni Rezervasyon Oluştur</a>
+            </div>
+        </div>
+    </div>
+    <div id="bookingList" class="row">
+        @if (Model.BookingListData != null)
+        {
+            @if (Model.BookingListData.Count() > 0)
+            {
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Rezervasyonlar</div>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Ad / Soyad</th>
+                                        <th scope="col">Telefon</th>
+                                        <th scope="col">Kişi Sayısı</th>
+                                        <th scope="col">Tarih</th>
+                                        <th scope="col">Rezervasyon Durumu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.BookingListData)
+                                    {
+                                        <tr>
+                                            <td>@item.BookingID</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.PersonCount</td>
+                                            <td>@item.Date</td>
+                                            @if (item.Status)
+                                            {
+                                                if (item.IsConfirmed)
+                                                {
+                                                    <td>Onaylandı</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>İptal Edildi</td>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <td>Onay Bekliyor</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info w-100 text-center">Henüz Kayıtlı Bir @emptyDataInfo Bulunmuyor!</div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-danger w-100 text-center">Bu Veriyi Görüntülemek İçin Yetkiniz Bulunmamaktadır!</div>
+        }
+    </div>
+</div>
