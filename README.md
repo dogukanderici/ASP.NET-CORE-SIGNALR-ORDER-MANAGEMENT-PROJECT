@@ -70,8 +70,8 @@ Rezervasyonları görüntüleme, düzenleme ve yeni rezervasyon oluşturma işle
 ![Screenshot_7](SignalRWebUI/wwwroot/asset/screenshots/portainer.jpg)
 **QR Kod taranamazsa manuel olarak masa seçimi yapılır.**
 ![Screenshot_8](SignalRWebUI/wwwroot/asset/screenshots/default_restaurant_tables.jpg)
-![Screenshot_9](SignalRWebUI/wwwroot/asset/screenshots/admin_dashboard_.jpg)
-![Screenshot_10](SignalRWebUI/wwwroot/asset/screenshots/money_case_.jpg)
+![Screenshot_9](SignalRWebUI/wwwroot/asset/screenshots/admin_dashboard.jpg)
+![Screenshot_10](SignalRWebUI/wwwroot/asset/screenshots/money_case.jpg)
 ![Screenshot_11](SignalRWebUI/wwwroot/asset/screenshots/money_case_history.jpg)
 ![Screenshot_12](SignalRWebUI/wwwroot/asset/screenshots/tables.jpg)
 ![Screenshot_13](SignalRWebUI/wwwroot/asset/screenshots/table_status.jpg)
