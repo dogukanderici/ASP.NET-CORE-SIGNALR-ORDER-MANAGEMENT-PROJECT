@@ -62,7 +62,7 @@ Rezervasyonlarý görüntüleme, düzenleme ve yeni rezervasyon oluþturma iþlemlerini
 ![Screenshot_4](SignalRWebUI/wwwroot/asset/screenshots/login.jpg)
 ![Screenshot_5](SignalRWebUI/wwwroot/asset/screenshots/register.jpg)
 ![Screenshot_6](SignalRWebUI/wwwroot/asset/screenshots/docker.jpg)
-![Screenshot_7](SignalRWebUI/wwwroot/asset/screenshots/portainer.jpg
+![Screenshot_7](SignalRWebUI/wwwroot/asset/screenshots/portainer.jpg)
 **QR Kod okunmasý sýrasýnda bir sorun oluþup masa seçimi yapýlamazsa manuel olarak masa seçimi yapýlýr.**
 ![Screenshot_8](SignalRWebUI/wwwroot/asset/screenshots/default_restaurant_tables.jpg)
 ![Screenshot_9](SignalRWebUI/wwwroot/asset/screenshots/admin_dashboard_.jpg)
